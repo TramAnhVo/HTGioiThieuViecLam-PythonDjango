@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
-    'drf_yasg'
+    'drf_yasg',
+    'cloudinary',
+    'oauth2_provider'
 ]
 
 import pymysql
@@ -51,6 +53,27 @@ AUTH_USER_MODEL = 'GioiThieuViecLam.User'
 CKEDITOR_UPLOAD_PATH = "ckeditors/images/"
 
 MEDIA_ROOT = '%s/GioiThieuViecLam/static/' % BASE_DIR
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    )
+}
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name="dfhexl1gh",
+    api_key="195159349819916",
+    api_secret="zAN8Lucg7XQ5Wl8KgBoUQKZcUxs"
+)
+
+CLIENT_ID = '9gdCmbglFUxekC57HfcwCHcBGzJjfcHT6s4laoNc'
+CLIENT_SECRET = 'ZlOz2C5PSwNrQoa5MFKNTMeJNLthrATlsw3z7dfnrvRr6cmkmW0Uzfv0UL65zUSPOFgSdLV6oAWtFj0KHetX3Ql2Rr0tkvfGCKpVbknbh5AXvA0gTp1G6HawcoyLC4t0'
+
+OAUTH2_PROVIDER = {
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

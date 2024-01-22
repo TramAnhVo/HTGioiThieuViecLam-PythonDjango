@@ -78,11 +78,17 @@ class CV(BaseModel):
     job = models.ForeignKey(Job, on_delete=models.RESTRICT)
 
 
-class Comment(models.Model):
-    content = RichTextField()
-    created_date = models.DateField(auto_now_add=True, null=True)
-    company = models.ForeignKey(Company, on_delete=models.RESTRICT)
-    user = models.ForeignKey(User, on_delete=models.RESTRICT)
+class Interaction(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE,null=False)
 
-    def __str__(self):
-        return self.content
+    class Meta:
+        abstract = True
+
+
+class Comment(Interaction):
+    content = models.CharField(max_length=255, null=False)
+
+
+class Rating(Interaction):
+    rate = models.SmallIntegerField(default=0)

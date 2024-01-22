@@ -24,6 +24,7 @@ class PositionSerializer(ModelSerializer):
 class CompanySerializer(ModelSerializer):
     image = SerializerMethodField()
 
+    # hinh anh
     def get_image(self, course):
         request = self.context['request']
         name = course.image.name
@@ -40,6 +41,12 @@ class CompanySerializer(ModelSerializer):
 
 
 class JobSerializer(ModelSerializer):
+    # moi quan he 1 nhieu => 1 major se co nhieu job
+    major = MajorSerializer(many=False)
+    location = LocationSerializer(many=False)
+    company = CompanySerializer(many=False)
+    position = PositionSerializer(many=False)
+
     class Meta:
         model = Job
         fields = '__all__'
@@ -49,18 +56,6 @@ class CVSerializer(ModelSerializer):
     class Meta:
         model = CV
         fields = '__all__'
-
-
-class CommentSerializer(ModelSerializer):
-    # User = SerializerMethodField()
-
-    # def get_user(self, comment):
-    #     return UserSerializer(comment.user, context={"request": self.context.get('request')}).data
-
-    class Meta:
-        model = Comment
-        fields = ['id', 'content', 'created_date', 'company_id','user_id']
-
 
 class UserSerializer(ModelSerializer):
     avatar = SerializerMethodField()
@@ -90,3 +85,13 @@ class UserSerializer(ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': 'true'}
         }
+
+
+# sua lai duong dan => company/1/comments/
+class CommentSerializer(ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'content', 'created_date', 'company','user']
+
