@@ -1,46 +1,32 @@
-from rest_framework.fields import SerializerMethodField
-from rest_framework.serializers import ModelSerializer
-
+from rest_framework import serializers
 from .models import Location, Major, Position, Job, Company, CV, User, Comment
 
-class LocationSerializer(ModelSerializer):
+
+class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = '__all__'
 
 
-class MajorSerializer(ModelSerializer):
+class MajorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Major
         fields = '__all__'
 
 
-class PositionSerializer(ModelSerializer):
+class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
         fields = '__all__'
 
 
-class CompanySerializer(ModelSerializer):
-    image = SerializerMethodField()
-
-    # hinh anh
-    def get_image(self, course):
-        request = self.context['request']
-        name = course.image.name
-        if name.startswith("static/"):
-            path = '/%s' % name
-        else:
-            path = '/static/%s' % name
-
-        return request.build_absolute_uri(path)
-
+class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = '__all__'
 
 
-class JobSerializer(ModelSerializer):
+class JobSerializer(serializers.ModelSerializer):
     # moi quan he 1 nhieu => 1 major se co nhieu job
     major = MajorSerializer(many=False)
     location = LocationSerializer(many=False)
@@ -52,46 +38,35 @@ class JobSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class CVSerializer(ModelSerializer):
+class CVSerializer(serializers.ModelSerializer):
     class Meta:
         model = CV
         fields = '__all__'
 
-class UserSerializer(ModelSerializer):
-    avatar = SerializerMethodField()
 
-    def get_avatar(self, user):
-        request = self.context['request']
-        if user.avatar:
-            name = user.avatar.name
-            if name.startswith("static/"):
-                path = '/%s' % name
-            else:
-                path = '/static/%s' % name
-
-            return request.build_absolute_uri(path)
-
-    def create(self, validated_data):
-        user = User(**validated_data)
-        user.set_password(user.password)
-        user.save()
-
-        return user
-
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "first_name", "last_name", "avatar",
-                  "username", "password", "email", "date_joined"]
+        fields = ["id", "first_name", "last_name", "avatar", "username", "password", "email", "date_joined"]
         extra_kwargs = {
-            'password': {'write_only': 'true'}
+            'password': {
+                'write_only': True
+            }
         }
 
+    def create(self, validated_data):
+        data = validated_data.copy()
+        u = User(**data)
+        u.set_password(u.password)
+        u.save()
 
-# sua lai duong dan => company/1/comments/
-class CommentSerializer(ModelSerializer):
+        return u
+
+
+class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
         model = Comment
-        fields = ['id', 'content', 'created_date', 'company','user']
+        fields = ['id', 'content', 'created_date','user']
 

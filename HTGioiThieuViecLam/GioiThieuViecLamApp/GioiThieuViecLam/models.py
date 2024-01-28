@@ -1,6 +1,7 @@
 from django.db import models
 from  django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
+from cloudinary.models import CloudinaryField
 
 class BaseModel(models.Model):
     created_date = models.DateField(auto_now_add=True, null=True)
@@ -34,25 +35,30 @@ class Position(models.Model):
 
 class User(AbstractUser):
     phone = models.CharField(max_length=10, null=True)
-    avatar = models.ImageField(upload_to='uploads/%Y/%m', null=True)
+    avatar = CloudinaryField('avatar', null=True)
 
     location = models.ForeignKey(Location, on_delete=models.RESTRICT, null=True)
     major = models.ForeignKey(Major, on_delete=models.RESTRICT, null=True)
 
 
 
-class Company(BaseModel):
+class Company(models.Model):
     name = name = models.CharField(max_length=255, null=False)
     description = RichTextField()
-    image = models.ImageField(upload_to='company/%Y/%m', null=False)
+    image = CloudinaryField('image', null=True)
     address = models.CharField(max_length=255, null=False)
     email = models.CharField(max_length=255, null=False)
     link = models.CharField(max_length=255, null=False)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    active = models.BooleanField(default=False)
+    created_date = models.DateField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['-id']
 
 
 class Job(BaseModel):
@@ -61,7 +67,7 @@ class Job(BaseModel):
     requirement = RichTextField()
     experience = models.CharField(max_length=255, null=False)
     salary = models.CharField(max_length=255, null=False)
-    out_off_date = models.DateField(auto_now=True, null=True)
+    out_off_date = models.DateField(auto_now=False, null=True)
 
     location = models.ForeignKey(Location, on_delete=models.RESTRICT)
     major = models.ForeignKey(Major, on_delete=models.RESTRICT)
@@ -72,10 +78,16 @@ class Job(BaseModel):
         return self.title
 
 
-class CV(BaseModel):
-    content = RichTextField()
+class CV(models.Model):
+    content = RichTextField(null=True)
     user = models.ForeignKey(User, on_delete=models.RESTRICT)
     job = models.ForeignKey(Job, on_delete=models.RESTRICT)
+    active = models.BooleanField(default=False)
+    created_date = models.DateField(auto_now_add=True, null=True)
+    link_cv = models.FileField(upload_to='pdfs/', null=True)
+
+    class Meta:
+        ordering = ['-id']
 
 
 class Interaction(BaseModel):

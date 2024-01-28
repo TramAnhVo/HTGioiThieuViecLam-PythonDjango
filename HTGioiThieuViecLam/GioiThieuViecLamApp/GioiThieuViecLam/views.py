@@ -1,10 +1,10 @@
 from rest_framework import viewsets, generics, status, permissions, parsers
-from . import serializers, paginator
 from rest_framework.decorators import action
 from rest_framework.views import Response
+
 from .models import Location, Major, Position, Company, Job, CV, User, Comment
-from .serializers import JobSerializer
 from . import perms
+from . import serializers, paginator
 
 
 class LocationView(viewsets.ViewSet,
@@ -51,16 +51,9 @@ class CompanyView(viewsets.ViewSet,
                   generics.RetrieveAPIView,
                   generics.UpdateAPIView,
                   generics.DestroyAPIView):
-    queryset = Company.objects.all()
+    queryset = Company.objects.filter(active=True).all()
     serializer_class = serializers.CompanySerializer
-
-    # danh sach viec lam cua mot cong ty
-    @action(methods=['get'], detail=True)
-    def jobs(self, request, pk):
-        jobs = self.get_object().job_set.filter(active=True).all()
-
-        return Response(serializers.JobSerializer(jobs, many=True, context={'request': request}).data,
-                        status=status.HTTP_200_OK)
+    permission_classes = [permissions.AllowAny()]
 
     def get_permissions(self):
         if self.action in ['add_comment']:
@@ -68,9 +61,35 @@ class CompanyView(viewsets.ViewSet,
 
         return self.permission_classes
 
-    @action(methods=['post'], url_path='comments', detail=True)
+    @action(methods=['post'],  detail=True)
     def add_comment(self, request, pk):
         c = Comment.objects.create(user=request.user, company=self.get_object(), content=request.data.get('content'))
+
+        return Response(serializers.CommentSerializer(c, many=False, context={'request': request}).data, status=status.HTTP_201_CREATED)
+
+    # danh sach binh luan theo 1 cong ty
+    @action(methods=['get'], detail=True)
+    def get_comment(self, request, pk):
+        d = self.get_object().comment_set.filter(active=True).all()
+
+        return Response(serializers.CommentSerializer(d, many=True, context={'request': request}).data, status=status.HTTP_200_OK)
+
+    # danh sach viec lam cua mot cong ty
+    @action(methods=['get'], detail=True)
+    def jobs(self, request, pk):
+        jobs = self.get_object().job_set.filter(active=True).all()
+
+        return Response(serializers.JobSerializer(jobs, many=True, context={'request': request}).data, status=status.HTTP_200_OK)
+
+    # tim kiem ten cong ty
+    def get_queryset(self):
+        queries = self.queryset
+
+        q = self.request.query_params.get("q")
+        if q:
+            queries = queries.filter(name__icontains=q)
+
+        return queries
 
 
 class JobView(viewsets.ViewSet,
@@ -102,6 +121,12 @@ class JobView(viewsets.ViewSet,
             queries = queries.filter(location_id=location_id)
 
         return queries
+
+    @action(methods=['get'], detail=True)
+    def get_cv(self, request, pk):
+        cvs = self.get_object().cv_set.filter(active=True).all()
+
+        return Response(serializers.CVSerializer(cvs, many=True, context={'request': request}).data, status=status.HTTP_200_OK)
 
 
 class CvViews(viewsets.ViewSet,
@@ -135,6 +160,7 @@ class UserView(viewsets.ViewSet,
         return Response(serializers.UserSerialzier(request.user).data)
 
 
+
 class CommentView(viewsets.ViewSet,
                   generics.RetrieveAPIView,
                   generics.UpdateAPIView,
@@ -142,4 +168,3 @@ class CommentView(viewsets.ViewSet,
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = [perms.OwnerAuthenticated]
-
