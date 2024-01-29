@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "ReactNativeJobApp",
+    "slug": "ReactNativeJobApp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "ReactNativeJobApp"
+}

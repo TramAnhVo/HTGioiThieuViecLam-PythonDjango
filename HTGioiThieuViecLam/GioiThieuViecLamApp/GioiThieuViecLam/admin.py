@@ -51,6 +51,12 @@ class CvAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['content', 'user', 'company', 'created_date', 'active']
+    list_filter = ['active']
+    list_per_page = 20
+
+
 admin_site.register(Location)
 admin_site.register(Major)
 admin_site.register(Position)
@@ -58,7 +64,7 @@ admin_site.register(Company, CompanyAdmin)
 admin_site.register(Job, JobAdmin)
 admin_site.register(User, UserAdmin)
 admin_site.register(CV, CvAdmin)
-admin_site.register(Comment)
+admin_site.register(Comment, CommentAdmin)
 
 
 
