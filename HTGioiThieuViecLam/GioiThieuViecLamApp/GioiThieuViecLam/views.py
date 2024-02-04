@@ -1,5 +1,6 @@
 from rest_framework import viewsets, generics, status, permissions, parsers
 from rest_framework.decorators import action
+from rest_framework.parsers import JSONParser
 from rest_framework.views import Response
 
 from .models import Location, Major, Position, Company, Job, CV, User, Comment
@@ -147,7 +148,8 @@ class UserView(viewsets.ViewSet,
                generics.DestroyAPIView):
     queryset = User.objects.filter(is_active=True).all()
     serializer_class = serializers.UserSerializer
-    parser_classes = [parsers.MultiPartParser]
+    # parser_classes = [parsers.MultiPartParser]
+    parser_classes = [JSONParser]
 
     def get_permissions(self):
         if self.action.__eq__('current_user'):
@@ -157,7 +159,7 @@ class UserView(viewsets.ViewSet,
 
     @action(methods=['get'], url_path='current-user', url_name='current-user', detail=False)
     def current_user(self, request):
-        return Response(serializers.UserSerialzier(request.user).data)
+        return Response(serializers.UserSerializer(request.user).data)
 
 
 

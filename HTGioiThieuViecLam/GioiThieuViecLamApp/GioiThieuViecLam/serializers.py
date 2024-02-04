@@ -47,7 +47,7 @@ class CVSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "first_name", "last_name", "avatar", "username", "password", "email", "date_joined"]
+        fields = ["id", "first_name", "last_name", "avatar", "url_avatar", "role", "username", "password", "email", "date_joined"]
         extra_kwargs = {
             'password': {
                 'write_only': True

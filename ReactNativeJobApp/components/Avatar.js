@@ -1,12 +1,36 @@
 import React, { useState } from 'react';
-import { View, Button, Modal, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid } from 'react-native';
+import { View, Button, Modal, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { storage } from "../configs/storage";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import * as ImagePicker from 'expo-image-picker';
 
 export default Avatar = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [imgUrl, setImgUrl] = useState(null);
+    const handleCameraLaunch = async () => {
+        const { granted } = await ImagePicker.requestCameraPermissionsAsync();
+        if (granted) {
+            const result = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: false,
+                aspect: [1, 1],
+                quality: 0.5,
+                allowsMultipleSelection: false,
+                cameraType: ImagePicker.CameraType.front
+            })
+            try {
+                if (!result.canceled) {
+                    await uploadFirebase(result.assets[0].uri,'takePhoto')
+                }
+            } catch (error) {
+                console.log("error",error);
+            }
+            setModalVisible(false)
+        } else {
+            Alert.alert("you need to give up permission to work")
+        }
+    }
     const uploadFirebase = async (uri, name) => {
         const response = await fetch(uri);
         const blob = await response.blob();
@@ -49,7 +73,7 @@ export default Avatar = () => {
                         ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT);
                     })
                     .catch((error) => {
-                        console.log("err",error);
+                        console.log("err", error);
                     });
             }
         } catch (error) {
@@ -77,7 +101,7 @@ export default Avatar = () => {
                         <TouchableOpacity style={[styles.option, styles.border]} onPress={() => uploadImage()}>
                             <Text style={styles.text}>Chọn ảnh từ thiết bị</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.option} onPress={() => console.log('Chụp ảnh')}>
+                        <TouchableOpacity style={styles.option} onPress={handleCameraLaunch}>
                             <Text style={styles.text}>Chụp ảnh</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.option, styles.border]} onPress={() => console.log('Chụp ảnh')}>

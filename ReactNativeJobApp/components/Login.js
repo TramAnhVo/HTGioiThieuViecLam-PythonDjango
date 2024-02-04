@@ -1,16 +1,47 @@
-import { Dimensions, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native"
+import { ActivityIndicator, Dimensions, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native"
 import { Text, View } from "react-native"
 import Entypo from 'react-native-vector-icons/Entypo'
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Fontisto from "react-native-vector-icons/Fontisto"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import API, { authApi, endpoints } from "../configs/API"
+import { CLIENT_ID, CLIENT_SECRET } from "../utils/key"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import MyContext from "../configs/MyContext"
 
 export default Login = ({ navigation }) => {
     const heightWindow = Dimensions.get("window").height;
+    const [username, setUsername] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [password, setPassword] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
     const showPass = () => setShowPassword(!showPassword);
-    const login = () => {
-        navigation.navigate('HomeJob');
+    // const [user, dispatch] = useContext(MyContext);
+    const login = async () => {
+        setLoading(true);
+        try {
+            const {data} = await API.post(endpoints['login'], {
+                "username": username,
+                "password": password,
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "grant_type": "password"
+            });
+            await AsyncStorage.setItem("access-token", data.access_token);
+            let user = await authApi(data.access_token).get(endpoints['current-user']);
+            // dispatch({
+            //     type: "login",
+            //     payload: user.data
+            // });
+            console.log(user.data);
+            navigation.navigate("Home");
+        } catch (error) {
+            // Handle network errors or other exceptions
+            console.error('An error occurred during login: ', error);
+        }
+        finally {
+            setLoading(false);
+        }
     }
     return (
         /*<ImageBackground style={{width: '100%', height: '100%'}} source={require['../']}>*/
@@ -18,19 +49,21 @@ export default Login = ({ navigation }) => {
             <View style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}>
                 {/* header */}
                 <View style={{ width: '100%', height: '8%', alignItems: 'center', marginTop: 0.18 * heightWindow }}>
-                    <Text style={{ fontSize: 28, fontWeight: '700', color: '#008000'  }}>Đăng nhập</Text>
+                    <Text style={{ fontSize: 28, fontWeight: '700', color: '#008000' }}>Đăng nhập</Text>
                 </View>
 
                 {/* Email && Password */}
                 <View style={{ width: '100%', alignItems: 'center', marginTop: 0.01 * heightWindow, marginBottom: 0.015 * heightWindow }}>
                     <View style={{ backgroundColor: "#F0F0F0", borderRadius: 100, padding: 12, width: '80%', height: '30px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Fontisto style={{ paddingLeft: 24 }} name='email' color="black" size={30} />
-                        <TextInput placeholder="Email" style={{ color: 'black', width: '75%', height: '100%' }}
+                        <TextInput onChangeText={(text) => setUsername(text)}
+                            placeholder="Ten nguoi dung" style={{ color: 'black', width: '75%', height: '100%' }}
                             autoCapitalize="none" />
                     </View>
                     <View style={{ backgroundColor: "#F0F0F0", marginTop: 0.015 * heightWindow, borderRadius: 100, padding: 12, width: '80%', height: '30px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Fontisto style={{ paddingLeft: 24 }} name='locked' color="black" size={30} />
-                        <TextInput placeholder="Nhập mật khẩu" style={{ color: 'black', width: '75%', height: '100%' }}
+                        <TextInput onChangeText={(text) => setPassword(text)}
+                            placeholder="Nhập mật khẩu" style={{ color: 'black', width: '75%', height: '100%' }}
                             autoCapitalize="none"
                             secureTextEntry={showPassword ? false : true} />
                         <Entypo onPress={() => showPass()}
@@ -45,10 +78,12 @@ export default Login = ({ navigation }) => {
 
                 {/* Dang nhap */}
                 <View style={{ height: '20%', width: '100%', marginTop: 0.00008 * heightWindow, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={login}
-                        style={{ marginBottom: 0.04 * heightWindow, borderRadius: 100, flexDirection: 'row', width: '80%', height: '30%', borderColor: 'white', borderWidth: 1, backgroundColor: '#00b14f', alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>ĐĂNG NHẬP</Text>
-                    </TouchableOpacity>
+                    {loading === true ? <ActivityIndicator /> : <>
+                        <TouchableOpacity onPress={login}
+                            style={{ marginBottom: 0.04 * heightWindow, borderRadius: 100, flexDirection: 'row', width: '80%', height: '30%', borderColor: 'white', borderWidth: 1, backgroundColor: '#00b14f', alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>ĐĂNG NHẬP</Text>
+                        </TouchableOpacity>
+                    </>}
                     <View style={{ width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
                         <View style={{ flex: 1, height: 1, backgroundColor: '#333' }} />
                         <Text style={{ marginHorizontal: 10, color: '#333', fontSize: 16, }}>Hoặc đăng nhập bằng</Text>

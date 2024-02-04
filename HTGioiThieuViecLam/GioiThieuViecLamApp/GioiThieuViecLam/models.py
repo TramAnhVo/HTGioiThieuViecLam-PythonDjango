@@ -36,6 +36,8 @@ class Position(models.Model):
 class User(AbstractUser):
     phone = models.CharField(max_length=10, null=True)
     avatar = CloudinaryField('avatar', null=True)
+    role = models.CharField(max_length=50, default='user')
+    url_avatar = models.CharField(max_length=255, null=True)
 
     location = models.ForeignKey(Location, on_delete=models.RESTRICT, null=True)
     major = models.ForeignKey(Major, on_delete=models.RESTRICT, null=True)
