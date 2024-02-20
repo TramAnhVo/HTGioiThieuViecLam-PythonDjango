@@ -8,6 +8,7 @@ import API, { authApi, endpoints } from "../configs/API"
 import { CLIENT_ID, CLIENT_SECRET } from "../utils/key"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import MyContext from "../configs/MyContext"
+import { MyCheckBox } from "./CheckBox"
 
 export default Login = ({ navigation }) => {
     const heightWindow = Dimensions.get("window").height;
@@ -16,7 +17,7 @@ export default Login = ({ navigation }) => {
     const [password, setPassword] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
     const showPass = () => setShowPassword(!showPassword);
-    // const [user, dispatch] = useContext(MyContext);
+    const [user, dispatch] = useContext(MyContext);
     const login = async () => {
         setLoading(true);
         try {
@@ -29,12 +30,12 @@ export default Login = ({ navigation }) => {
             });
             await AsyncStorage.setItem("access-token", data.access_token);
             let user = await authApi(data.access_token).get(endpoints['current-user']);
-            // dispatch({
-            //     type: "login",
-            //     payload: user.data
-            // });
+            dispatch({
+                type: "login",
+                payload: user.data
+            });
             console.log(user.data);
-            navigation.navigate("Home");
+            navigation.navigate("HomeJob");
         } catch (error) {
             // Handle network errors or other exceptions
             console.error('An error occurred during login: ', error);
@@ -68,6 +69,9 @@ export default Login = ({ navigation }) => {
                             secureTextEntry={showPassword ? false : true} />
                         <Entypo onPress={() => showPass()}
                             style={{ position: 'absolute', right: 8 }} name={showPassword ? 'eye' : 'eye-with-line'} color="black" size={30} />
+                    </View>
+                    <View style={styles.checkBox}>
+                        <MyCheckBox/>
                     </View>
                 </View>
 
@@ -147,5 +151,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'grey'
     },
-
+    checkBox:{
+        marginTop: 12,
+        marginLeft:8,
+        width:"80%",
+    }
 });

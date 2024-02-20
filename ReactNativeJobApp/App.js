@@ -13,10 +13,11 @@ import QLBD from "./components/QLBD";
 import TTDN from "./components/TTDN";
 import CompanyDeatail from "./components/CompanyDeatail";
 import Account from "./components/Account";
-import AllJobs from "./components/Job";
+import AllJob from "./components/AllJob";
 import Company from "./components/Company";
 import MyContext from "./configs/MyContext";
 import MyUserReducer from "./reducers/MyUserReducer";
+import Apply from "./components/Apply";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,6 +73,8 @@ export default MainComponent = function () {
                     <Stack.Screen name="CTDN" component={CompanyDeatail} options={{ headerShown: true, title: '' }} />
                     {/* trang cac cong ty */}
                     <Stack.Screen name="CT" component={Company} options={{ headerShown: false }} />
+                    {/* gửi CV */}
+                    <Stack.Screen name="Apply" component={Apply} options={{ headerShown: false}} />
                 </Stack.Navigator>
             </NavigationContainer>
         </MyContext.Provider>

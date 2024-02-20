@@ -35,9 +35,9 @@ class Position(models.Model):
 
 class User(AbstractUser):
     phone = models.CharField(max_length=10, null=True)
-    avatar = CloudinaryField('avatar', null=True)
     role = models.CharField(max_length=50, default='user')
     url_avatar = models.CharField(max_length=255, null=True)
+    state = models.BooleanField(default=False)
 
     location = models.ForeignKey(Location, on_delete=models.RESTRICT, null=True)
     major = models.ForeignKey(Major, on_delete=models.RESTRICT, null=True)
@@ -47,7 +47,7 @@ class User(AbstractUser):
 class Company(models.Model):
     name = name = models.CharField(max_length=255, null=False)
     description = RichTextField()
-    image = CloudinaryField('image', null=True)
+    image = models.CharField(max_length=255, null=False)
     address = models.CharField(max_length=255, null=False)
     email = models.CharField(max_length=255, null=False)
     link = models.CharField(max_length=255, null=False)
@@ -86,7 +86,7 @@ class CV(models.Model):
     job = models.ForeignKey(Job, on_delete=models.RESTRICT)
     active = models.BooleanField(default=False)
     created_date = models.DateField(auto_now_add=True, null=True)
-    link_cv = models.FileField(upload_to='pdfs/', null=True)
+    link_cv = models.CharField(max_length=255, null=False)
 
     class Meta:
         ordering = ['-id']

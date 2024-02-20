@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Button, Modal, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { storage } from "../configs/storage";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import * as ImagePicker from 'expo-image-picker';
+import MyContext from '../configs/MyContext';
+import { IMAGE_DEFAULT } from '../utils/image_default';
+import API, { endpoints } from '../configs/API';
 
 export default Avatar = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [imgUrl, setImgUrl] = useState(null);
+                  
+    const [user,dispatch] = useContext(MyContext);
+    useEffect(() => {
+        setImgUrl(user.url_avatar || IMAGE_DEFAULT)
+        console.log(user);
+    }, []);
     const handleCameraLaunch = async () => {
         const { granted } = await ImagePicker.requestCameraPermissionsAsync();
         if (granted) {
@@ -21,45 +30,55 @@ export default Avatar = () => {
             })
             try {
                 if (!result.canceled) {
-                    await uploadFirebase(result.assets[0].uri,'takePhoto')
+                    const url = await uploadFirebase(result.assets[0].uri, 'takePhoto');
+                    await updateAvatar(url);
+                    setImgUrl(url);
+                    setModalVisible(false);
+                    ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT);
                 }
             } catch (error) {
-                console.log("error",error);
+                console.log("error", error);
             }
-            setModalVisible(false)
+            setModalVisible(false);
         } else {
             Alert.alert("you need to give up permission to work")
         }
     }
     const uploadFirebase = async (uri, name) => {
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        const storageRef = ref(storage, `images/${Date.now()}_${name}`);
-        const uploadTask = uploadBytesResumable(storageRef, blob);
-
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                // Handle progress updates
-                const progress = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                console.log(`Upload is ${progress}% done`);
-            },
-            (error) => {
-                // Handle unsuccessful uploads
-                console.error("Error uploading file:", error);
-            },
-            () => {
-                // Handle successful uploads on complete
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log('Download URL:', downloadURL);
-                    setImgUrl(downloadURL);
-                    setModalVisible(false);
+        return new Promise((resolve, reject) => {
+            fetch(uri)
+                .then((response) => response.blob())
+                .then((blob) => {
+                    const storageRef = ref(storage, `images/${Date.now()}_${name}`);
+                    const uploadTask = uploadBytesResumable(storageRef, blob);
+                    uploadTask.on(
+                        "state_changed",
+                        (snapshot) => {
+                            const progress = Math.round(
+                                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                            );
+                            console.log(`Upload is ${progress}% done`);
+                        },
+                        (error) => {
+                            console.error("Error uploading file:", error);
+                            reject(error);
+                        },
+                        () => {
+                            getDownloadURL(uploadTask.snapshot.ref)
+                                .then((downloadURL) => {
+                                    resolve(downloadURL);
+                                })
+                                .catch((error) => {
+                                    reject(error);
+                                });
+                        }
+                    );
+                })
+                .catch((error) => {
+                    reject(error);
                 });
-            }
-        );
-    }
+        });
+    };
     const uploadImage = async () => {
         try {
             const result = await DocumentPicker.getDocumentAsync({
@@ -68,18 +87,33 @@ export default Avatar = () => {
             });
             if (!result.canceled) {
                 const { uri, name } = result.assets[0];
-                Promise.all([uploadFirebase(uri, name), promise2])
-                    .then(() => {
-                        ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT);
-                    })
-                    .catch((error) => {
-                        console.log("err", error);
-                    });
+                const url = await uploadFirebase(uri, name);
+                await updateAvatar(url);
+                setImgUrl(url);
+                setModalVisible(false);
+                ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT);
             }
         } catch (error) {
             console.error('Error uploading image:', error);
         }
     };
+    const deleteAvatar=async()=>{
+        setImgUrl(IMAGE_DEFAULT);
+        setModalVisible(false);
+        await updateAvatar(IMAGE_DEFAULT);
+    }
+    const updateAvatar = async (url) => {
+        try {
+            // let user = await authApi(data.access_token).get(endpoints['current-user']);
+            const res = await API.patch(endpoints[`update-user`](user.id), { "url_avatar": url })
+            dispatch({
+                type: "login",
+                payload: res.data
+            });
+        } catch (error) {
+            console.log("Show error: ", error);
+        }
+    }
     return (
         <>
             <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -104,7 +138,7 @@ export default Avatar = () => {
                         <TouchableOpacity style={styles.option} onPress={handleCameraLaunch}>
                             <Text style={styles.text}>Chụp ảnh</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.option, styles.border]} onPress={() => console.log('Chụp ảnh')}>
+                        <TouchableOpacity style={[styles.option, styles.border]} onPress={() => deleteAvatar}>
                             <Text style={styles.text}>Xóa ảnh</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.option} onPress={() => setModalVisible(false)}>

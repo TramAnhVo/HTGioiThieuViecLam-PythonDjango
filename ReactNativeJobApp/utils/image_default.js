@@ -1,0 +1,1 @@
+export const IMAGE_DEFAULT="https://firebasestorage.googleapis.com/v0/b/pushresume-bc00f.appspot.com/o/images%2F1707035414764_8-anh-dai-dien-trang-inkythuatso-03-15-26-54.jpg?alt=media&token=29c9a54e-6e8e-490b-9244-22ff2d1b7297"

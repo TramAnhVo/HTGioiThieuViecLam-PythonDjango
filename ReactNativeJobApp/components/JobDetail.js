@@ -6,9 +6,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import API, { endpoints } from "../configs/API";
 import RenderHTML from "react-native-render-html";
+import { useWindowDimensions } from 'react-native';
 
 
-export default JobDetails = ({ route }) => {
+export default JobDetails = ({ route, navigation }) => {
+    const windowWidth = useWindowDimensions().width;
     const { height } = Dimensions.get('window');
     const [jobs, setJobs] = useState(null)
     const { jobId } = route.params;
@@ -27,6 +29,10 @@ export default JobDetails = ({ route }) => {
         loadJobDetail();
     }, [jobId]);
 
+    const applyCV = () => {
+        // console.log(jobId);
+        navigation.navigate("Apply", { "jobId": jobId })
+    }
 
     return (
         <View style={{ flex: 1 }}>
@@ -96,7 +102,7 @@ export default JobDetails = ({ route }) => {
                                 <Text style={{ fontSize: 18, fontWeight: '600', marginLeft: 15 }}>Miêu tả công việc</Text>
                             </View>
                             <ScrollView style={{ height: height * 0.55 }}>
-                                <RenderHTML source={{ html: jobs.description }} style={{ fontSize: 16 }} />
+                                <RenderHTML contentWidth={windowWidth} source={{ html: jobs.description }} style={{ fontSize: 16 }} />
                             </ScrollView>
                         </View>
 
@@ -106,7 +112,7 @@ export default JobDetails = ({ route }) => {
                                 <Text style={{ fontSize: 18, fontWeight: '600', marginLeft: 15 }}>Yêu cầu công việc</Text>
                             </View>
                             <ScrollView style={{ height: height * 0.4 }}>
-                                <RenderHTML source={{ html: jobs.requirement }} style={{ fontSize: 16 }} />
+                                <RenderHTML contentWidth={windowWidth} source={{ html: jobs.requirement }} style={{ fontSize: 16 }} />
                             </ScrollView>
                         </View>
 
@@ -114,7 +120,8 @@ export default JobDetails = ({ route }) => {
                 </ScrollView>
 
                 <View style={{ flex: 0.12, backgroundColor: '#EEEEEE' }}>
-                    <TouchableOpacity style={{ width: '80%', marginTop: 15, marginLeft: '10%' }}>
+                    <TouchableOpacity onPress={applyCV}
+                        style={{ width: '80%', marginTop: 15, marginLeft: '10%' }}>
                         <Text style={{ textAlign: 'center', backgroundColor: 'green', borderRadius: 10, padding: 8, color: 'white' }}>Ứng tuyển ngay</Text>
                     </TouchableOpacity>
                 </View>

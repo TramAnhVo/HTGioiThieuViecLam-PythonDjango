@@ -8,10 +8,11 @@ export const endpoints = {
     'company-details': (companyId) => `/companies/${companyId}/`,
     'job-company':  (companyId) => `/companies/${companyId}/jobs/`,
     'add-comment': (lessonId) => `/lessons/${lessonId}/comments/`,
-
+    'cv':'/cvs/',
     'login': '/o/token/',
     'current-user': '/users/current-user/',
     'register': '/users/',
+    'update-user': (userId) => `/users/${userId}/`,
 }
 
 export const authApi = (accessToken) => axios.create({

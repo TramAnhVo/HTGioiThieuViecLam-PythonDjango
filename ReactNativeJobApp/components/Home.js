@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions, StatusBar, ScrollView, Image, ActivityIndicator } from 'react-native';
 import API, { endpoints } from "../configs/API";
 import DoanhNghiep from "./Company";
+import Job from "./Job";
 
 const windownHeight = Dimensions.get('window').height;
 
@@ -38,13 +39,7 @@ export default Home = ({ route, navigation }) => {
         loadCompany();      
     }, []);
 
-    const goToDetail = (jobId) => {
-        navigation.navigate("CTCV", {"jobId": jobId})
-    }
-
-    const goToCompanyDetail = (companyId) => {
-        navigation.navigate("CTDN", {"companyId": companyId})
-    }
+    
 
     return (
         <View style={{ flex: 1 }}>
@@ -56,22 +51,7 @@ export default Home = ({ route, navigation }) => {
                     <View style={styles.Jobs}>
                         <Text style={styles.TextHead}>CÔNG VIỆC MỚI NHẤT</Text>
                         {jobs.map(c => (
-                            <TouchableOpacity onPress={() => goToDetail(c.id)}>
-                                <View style={styles.ItemJob}>
-                                    <View style={{ width: '20%' }} >
-                                        <Image source={require('../components/image/job.png')} style={styles.avatar} />
-                                    </View>
-                                    <View style={{ width: '73%' }}>
-                                        <Text style={{fontSize: 16, fontWeight: '700'}}>{c.title}</Text>
-                                        <Text style={{fontSize: 13, fontWeight: '400', textAlign: 'left'}}>{c.company.name}</Text>
-
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 4 }}>
-                                            <Text style={styles.TextTag}>{c.salary}</Text>
-                                            <Text style={styles.TextTag}>{c.location.name}</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
+                            <Job navigation={navigation} c={c}/>
                         ))}
                     </View>
                 </>}
