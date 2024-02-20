@@ -1,7 +1,7 @@
 from django.db import models
 from  django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
-from cloudinary.models import CloudinaryField
+
 
 class BaseModel(models.Model):
     created_date = models.DateField(auto_now_add=True, null=True)
@@ -35,17 +35,18 @@ class Position(models.Model):
 
 class User(AbstractUser):
     phone = models.CharField(max_length=10, null=True)
-    avatar = CloudinaryField('avatar', null=True)
+    role = models.CharField(max_length=50, default='user')
+    avatar = models.CharField(max_length=255, null=True)
+    state = models.BooleanField(default=False)
 
     location = models.ForeignKey(Location, on_delete=models.RESTRICT, null=True)
     major = models.ForeignKey(Major, on_delete=models.RESTRICT, null=True)
 
 
-
 class Company(models.Model):
     name = name = models.CharField(max_length=255, null=False)
     description = RichTextField()
-    image = CloudinaryField('image', null=True)
+    image = models.CharField(max_length=255, null=True)
     address = models.CharField(max_length=255, null=False)
     email = models.CharField(max_length=255, null=False)
     link = models.CharField(max_length=255, null=False)
