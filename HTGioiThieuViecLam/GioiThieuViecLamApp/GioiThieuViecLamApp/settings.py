@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-_w^34lqktp-kx$=@*-658sm_c5@smino#q)-==-#%8k^7v%^(8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -114,7 +114,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'workdb',
         'USER': 'root',
-        'PASSWORD': 'Admin@123',
+        'PASSWORD': 'Ngocyen2002@',
         'HOST': ''  # mặc định localhost
     }
 }

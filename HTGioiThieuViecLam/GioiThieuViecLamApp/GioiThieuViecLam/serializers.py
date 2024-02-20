@@ -37,17 +37,10 @@ class JobSerializer(serializers.ModelSerializer):
         model = Job
         fields = '__all__'
 
-
-class CVSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CV
-        fields = '__all__'
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "first_name", "last_name", "avatar", "username", "password", "email", "date_joined"]
+        fields = ["id", "first_name", "last_name", "url_avatar", "role", "username", "password", "email", "date_joined"]
         extra_kwargs = {
             'password': {
                 'write_only': True
@@ -61,6 +54,11 @@ class UserSerializer(serializers.ModelSerializer):
         u.save()
 
         return u
+
+class CVSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CV
+        fields = '__all__'
 
 
 class CommentSerializer(serializers.ModelSerializer):

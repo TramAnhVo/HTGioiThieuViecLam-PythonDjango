@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import { Dimensions, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Octicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import Avatar from "./Avatar";
+
+
 const windownHeight = Dimensions.get('window').height;
 
 export default Account = ({ navigation }) => {
+    
     return (
         <View style={{ flex: 1 }}>
             <StatusBar barStyle='default' />
@@ -63,9 +68,7 @@ export default Account = ({ navigation }) => {
 
             {/* phan de anh dai dien nguoi dung va ten nguoi dung */}
             <View style={styles.UserBar}>
-                <View>
-                    <Image source={require('./image/job.png')} style={styles.avatar} />
-                </View>
+                <Avatar/>
                 <View >
                     <Text style={{ fontSize: 20, textAlign: 'center' }}>Nguyễn Văn A</Text>
                     <Text styles={{ textAlign: 'center' }}>Nhà tuyển dụng</Text>

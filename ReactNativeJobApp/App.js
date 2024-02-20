@@ -11,13 +11,14 @@ import Register from "./components/Register";
 import JobDetails from "./components/JobDetail";
 import QLBD from "./components/QLBD";
 import TTDN from "./components/TTDN";
-import CompanyDetail from "./components/CompanyDetail";
+import CompanyDeatail from "./components/CompanyDeatail";
 import Account from "./components/Account";
-import AllJobs from "./components/Job";
+import AllJob from "./components/AllJob";
 import Company from "./components/Company";
 import MyContext from "./configs/MyContext";
 import MyUserReducer from "./reducers/MyUserReducer";
-import Logout from "./components/Logout";
+import Apply from "./components/Apply";
+
 
 
 const Stack = createNativeStackNavigator();
@@ -45,43 +46,42 @@ function HomeJob() {
             headerShown: false,
         })}>
             <Tab.Screen name="Home" component={Home} options={{ title: 'Trang chủ' }} />
-            <Tab.Screen name="Jobs" component={AllJobs} options={{ title: 'Công việc' }} />
+
+            <Tab.Screen name="Jobs" component={AllJob} options={{ title: 'Công việc' }} />
+
             <Tab.Screen name="Account" component={Account} options={{ title: 'Tài khoản' }} />
         </Tab.Navigator>
     );
 }
 
 export default MainComponent = function () {
-    // const [user, dispatch] = useReducer(MyUserReducer, null);
-
+    const [user, dispatch] = useReducer(MyUserReducer, null);
     return (
-        // <MyContext.Provider value={[user, dispatch]}>
+        <MyContext.Provider value={[user, dispatch]}>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="HomeJob" options={{ headerShown: false }}>
-                    {/* {user === null ? <> */}
-                        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-                    {/* </> : <> */}
-                        {/* <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} /> */}
-                        <Stack.Screen name="HomeJob" component={HomeJob} options={{ headerShown: false }} />
-                        <Stack.Screen name="Logout" component={Logout} options={{ headerShown: false }} />
-                    {/* </>} */}
-
-                    <Stack.Screen name="SeeCV" component={SeeCV} options={{ headerShown: true, title: 'hồ sơ ứng tuyển' }} />
+                <Stack.Navigator initialRouteName="Login" options={{ headerShown: false }}>
+                    <Stack.Screen name="HomeJob" component={HomeJob} options={{ headerShown: false }} />
+                    <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+                    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="SeeCV" component={SeeCV} options={{ headerShown: false }} />
+                    <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
                     {/* quan ly bai dang tuyen cua doanh nghiep */}
-                    <Stack.Screen name="QLBD" component={QLBD} options={{ headerShown: true, title: 'bài đăng tuyển' }} />
+                    <Stack.Screen name="QLBD" component={QLBD} options={{ headerShown: false }} />
                     {/* thong tin doanh nghiep */}
-                    <Stack.Screen name="TTDN" component={TTDN} options={{ headerShown: true, title: 'thông tin chi tiết' }} />
+                    <Stack.Screen name="TTDN" component={TTDN} options={{ headerShown: false }} />
                     {/* dang tin tuyen dung */}
                     <Stack.Screen name="DTTD" component={DangBaiTuyenDung} options={{ headerShown: false }} />
                     {/* chi tiet cong viec */}
                     <Stack.Screen name="CTCV" component={JobDetails} options={{ headerShown: false }} />
                     {/* chi tiet cong ty */}
-                    <Stack.Screen name="CTDN" component={CompanyDetail} options={{ headerShown: true, title: 'thông tin chi tiết' }} />
+                    <Stack.Screen name="CTDN" component={CompanyDeatail} options={{ headerShown: true, title: '' }} />
                     {/* trang cac cong ty */}
                     <Stack.Screen name="CT" component={Company} options={{ headerShown: false }} />
+                    {/* gửi CV */}
+                    <Stack.Screen name="Apply" component={Apply} options={{ headerShown: false}} />
                 </Stack.Navigator>
             </NavigationContainer>
-        // </MyContext.Provider>
+        </MyContext.Provider>
+
     );
 }

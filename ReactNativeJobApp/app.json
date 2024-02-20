@@ -1,11 +1,28 @@
 {
   "expo": {
-    "name": "ReactNativeJobApp",
-    "slug": "ReactNativeJobApp",
+    "name": "ReactNativeDemo",
+    "slug": "ReactNativeDemo",
     "version": "1.0.0",
+    "plugins": [
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
+    "permissions": [
+      "READ_EXTERNAL_STORAGE"
+    ],
     "assetBundlePatterns": [
       "**/*"
     ]
   },
-  "name": "ReactNativeJobApp"
+  "name": "ReactNativeDemo"
 }
