@@ -34,6 +34,7 @@ export default JobDetails = ({ route, navigation }) => {
         navigation.navigate("Apply", { "jobId": jobId })
     }
 
+
     return (
         <View style={{ flex: 1 }}>
             {jobs === null ? <ActivityIndicator /> : <>

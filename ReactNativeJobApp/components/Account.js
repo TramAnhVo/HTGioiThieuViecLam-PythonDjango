@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Dimensions, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Octicons } from '@expo/vector-icons';
@@ -12,7 +13,6 @@ const windownHeight = Dimensions.get('window').height;
 
 export default Account = ({ navigation }) => {
     
-
     return (
         <View style={{ flex: 1 }}>
             <StatusBar barStyle='default' />

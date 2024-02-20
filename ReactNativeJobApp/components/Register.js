@@ -7,6 +7,7 @@ import { useState } from "react"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import API, { endpoints } from "../configs/API"
 
+
 const heightWindow = Dimensions.get("window").height;
 
 export default Register = ({ navigation }) => {
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
         color: 'black',
         width: '75%',
         height: '100%',
-        
+
     },
     button: {
         height: '20%',

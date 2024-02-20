@@ -4,6 +4,7 @@ import API, { endpoints } from "../configs/API";
 import DoanhNghiep from "./Company";
 import Job from "./Job";
 
+
 const windownHeight = Dimensions.get('window').height;
 
 export default Home = ({ route, navigation }) => {
@@ -39,7 +40,9 @@ export default Home = ({ route, navigation }) => {
         loadCompany();      
     }, []);
 
-    
+    const goToCompanyDetail = (companyId) => {
+        navigation.navigate("CTDN", {"companyId": companyId})
+    }
 
     return (
         <View style={{ flex: 1 }}>

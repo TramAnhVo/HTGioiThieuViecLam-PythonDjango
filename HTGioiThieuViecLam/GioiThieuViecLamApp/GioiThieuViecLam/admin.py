@@ -1,9 +1,9 @@
 from django.contrib import admin
-from django.utils.safestring import mark_safe
-
 from .models import Location, Major, Position, Job, Company, CV, Comment, User
 from django.template.response import TemplateResponse
-from django.urls import path
+from oauth2_provider.models import Application, RefreshToken, IDToken, AccessToken, Grant
+from django.contrib.auth.models import Group, Permission
+from django.urls import path, reverse
 from . import dao
 
 
@@ -57,6 +57,11 @@ class CommentAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+class OauthAdmin(admin.ModelAdmin):
+    list_display = ['client_id', 'name', 'user_id', 'client_type', 'authorization_grant_type', 'created']
+
+
+# menu gioi thieu viec lam
 admin_site.register(Location)
 admin_site.register(Major)
 admin_site.register(Position)
@@ -65,6 +70,17 @@ admin_site.register(Job, JobAdmin)
 admin_site.register(User, UserAdmin)
 admin_site.register(CV, CvAdmin)
 admin_site.register(Comment, CommentAdmin)
+
+# menu chung thuc oauth2
+admin_site.register(Application, OauthAdmin)
+admin_site.register(AccessToken)
+admin_site.register(RefreshToken)
+admin_site.register(Grant)
+admin_site.register(IDToken)
+
+# menu chung thuc
+admin_site.register(Permission)
+admin_site.register(Group)
 
 
 

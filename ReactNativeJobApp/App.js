@@ -19,6 +19,8 @@ import MyContext from "./configs/MyContext";
 import MyUserReducer from "./reducers/MyUserReducer";
 import Apply from "./components/Apply";
 
+
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -44,7 +46,9 @@ function HomeJob() {
             headerShown: false,
         })}>
             <Tab.Screen name="Home" component={Home} options={{ title: 'Trang chủ' }} />
+
             <Tab.Screen name="Jobs" component={AllJob} options={{ title: 'Công việc' }} />
+
             <Tab.Screen name="Account" component={Account} options={{ title: 'Tài khoản' }} />
         </Tab.Navigator>
     );

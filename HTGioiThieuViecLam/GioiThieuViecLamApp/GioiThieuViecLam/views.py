@@ -161,6 +161,11 @@ class UserView(viewsets.ViewSet,
     def current_user(self, request):
         return Response(serializers.UserSerializer(request.user).data)
 
+    @action(methods=['get'], detail=True)
+    def company(self, request, pk):
+        c = self.get_object().company_set.filter(active=True).all()
+
+        return Response(serializers.CompanySerializer(c, many=True, context={'request': request}).data, status=status.HTTP_200_OK)
 
 
 class CommentView(viewsets.ViewSet,
