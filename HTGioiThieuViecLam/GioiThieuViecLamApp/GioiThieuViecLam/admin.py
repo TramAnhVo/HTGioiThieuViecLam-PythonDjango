@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+from .dao import activate_or_lock_company_account
 from .models import Location, Major, Position, Job, Company, CV, Comment, User
 from django.template.response import TemplateResponse
 from oauth2_provider.models import Application, RefreshToken, IDToken, AccessToken, Grant
@@ -12,14 +14,13 @@ class JobAppAdminSite(admin.AdminSite):
 
     def get_urls(self):
         return [
-                   path('job-stats/', self.stats_view)
+                   path('job-stats/', self.stats_view,name='job-stats')
                ] + super().get_urls()
 
     def stats_view(self, request):
         return TemplateResponse(request, 'admin/stats.html', {
-            'stats': dao.count_job_by_cate()
+            'stats': dao.count_job_by_cate(request.GET.get('month'), request.GET.get('year'))
         })
-
 
 admin_site = JobAppAdminSite(name='myapp')
 
@@ -33,13 +34,27 @@ class JobAdmin(admin.ModelAdmin):
 
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ['name', 'address', 'email', 'link', 'active']
+    actions = ['activate_selected_accounts','lock_selected_accounts']
     list_filter = ['active']
     search_fields = ['name']
     list_per_page = 20
 
+    def activate_selected_accounts(self, request, queryset):
+        for company in queryset:
+            activate_or_lock_company_account(company.id, True)
+        self.message_user(request, "Selected accounts have been activated successfully.")
+
+    activate_selected_accounts.short_description = "Activate selected accounts"
+
+    def lock_selected_accounts(self, request, queryset):
+        for company in queryset:
+            activate_or_lock_company_account(company.id, False)
+        self.message_user(request, "Selected accounts have been locked successfully.")
+
+    lock_selected_accounts.short_description = "Lock selected accounts"
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'last_name', 'first_name', 'email', 'is_active', 'is_superuser']
+    list_display = ['pk', 'last_name', 'first_name', 'email', 'is_active', 'state', 'is_superuser']
     list_filter = ['is_active']
     search_fields = ['name']
     list_per_page = 20
