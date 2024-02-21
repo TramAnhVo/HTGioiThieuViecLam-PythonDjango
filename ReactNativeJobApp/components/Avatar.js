@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Button, Modal, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native';
+import { View, Modal, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { storage } from "../configs/storage";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";

@@ -70,9 +70,7 @@ export default Login = ({ navigation }) => {
                         <Entypo onPress={() => showPass()}
                             style={{ position: 'absolute', right: 8 }} name={showPassword ? 'eye' : 'eye-with-line'} color="black" size={30} />
                     </View>
-                    <View style={styles.checkBox}>
-                        <MyCheckBox/>
-                    </View>
+                    
                 </View>
 
                 {/* Quen mat khau */}
@@ -150,11 +148,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderColor: 'grey'
-    },
-    checkBox:{
-        marginTop: 12,
-        marginLeft:8,
-        width:"80%",
     }
 
 });

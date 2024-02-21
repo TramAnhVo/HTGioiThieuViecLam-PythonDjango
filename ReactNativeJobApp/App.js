@@ -18,6 +18,7 @@ import Company from "./components/Company";
 import MyContext from "./configs/MyContext";
 import MyUserReducer from "./reducers/MyUserReducer";
 import Apply from "./components/Apply";
+import FormCompany from "./components/FormCompany";
 
 
 
@@ -79,6 +80,8 @@ export default MainComponent = function () {
                     <Stack.Screen name="CT" component={Company} options={{ headerShown: false }} />
                     {/* gửi CV */}
                     <Stack.Screen name="Apply" component={Apply} options={{ headerShown: false}} />
+                    {/* đăng ký công ty */}
+                    <Stack.Screen name="FormCompany" component={FormCompany} options={{ headerShown: false}} />
                 </Stack.Navigator>
             </NavigationContainer>
         </MyContext.Provider>

@@ -79,7 +79,7 @@ export default Apply = ({ route, navigation }) => {
                 link_cv: url,
             })
             setLoading(false)
-            navigation.navigate('Home');
+            navigation.navigate('HomeJob');
             ToastAndroid.show('CV đã được gửi thành công', ToastAndroid.SHORT);
         } catch (error) {
             setLoading(false)
