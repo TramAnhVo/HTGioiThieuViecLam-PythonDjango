@@ -8,7 +8,6 @@ import API, { authApi, endpoints } from "../configs/API"
 import { CLIENT_ID, CLIENT_SECRET } from "../utils/key"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import MyContext from "../configs/MyContext"
-import { MyCheckBox } from "./CheckBox"
 
 export default Login = ({ navigation }) => {
     const heightWindow = Dimensions.get("window").height;

@@ -59,7 +59,7 @@ export default Register = ({ navigation }) => {
                 if (isChecked) {
                     const updatedFormData = { ...formData };
                     updatedFormData.role = 'NTD';
-                    navigation.navigate("FormCompany", { data: updatedFormData });
+                    navigation.navigate("FormCompany", { dataUser: updatedFormData });
                     return;
                 }
                 await API.post(endpoints[`register`], formData, {
