@@ -10,8 +10,7 @@ const windownHeight = Dimensions.get('window').height;
 export default Home = ({ route, navigation }) => {
     const [jobs, setJobs] = useState(null)
     const [companies, setCompanies] = useState(null)
-    // const jobId = route.params;
-    // const {jobId} = route.params;
+    const [company, setCompany] = useState(null)
 
     useEffect(() => {
         const loadJob = async () => {
@@ -21,6 +20,16 @@ export default Home = ({ route, navigation }) => {
             try {
                 let res = await API.get(endpoints['jobs']);
                 setJobs(res.data.results)
+
+                if (res.data.length > 0) {
+                    let firstItem = res.data[0];
+                    let com = await API.get(endpoints['company-details'](firstItem.id))
+                    setCompany(com.data)
+                } else {
+                    console.log("Mảng trống");
+                }
+
+                console.log(res.data.results)
             } catch (ex) {
                 console.error(ex);
             }
@@ -39,6 +48,10 @@ export default Home = ({ route, navigation }) => {
         loadJob();
         loadCompany();      
     }, []);
+
+    const goToDetail = (jobId) => {
+        navigation.navigate("CTCV", {"jobId": jobId})
+    }
 
     const goToCompanyDetail = (companyId) => {
         navigation.navigate("CTDN", {"companyId": companyId})
@@ -71,7 +84,7 @@ export default Home = ({ route, navigation }) => {
                             <View style={styles.CompanyItem} >
                                 <TouchableOpacity onPress={() => goToCompanyDetail(m.id)} >
                                     <View style={{ alignItems: 'center', justifyContent: 'center' }} >
-                                        <Image source={require('../components/image/job.png')} style={styles.logo} />
+                                        <Image  source={{uri: m.image}} style={styles.logo} />
                                     </View>
                                     <View >
                                         <Text style={{ textAlign: 'center', marginTop: 10, fontWeight: "700", }}>{m.name}</Text>

@@ -61,7 +61,6 @@ export default Register = ({ navigation }) => {
                 ToastAndroid.show('Register successfully!', ToastAndroid.SHORT);
             }
         } catch (error) {
-            // setErr(true);
             console.log("err",error);
         }
     }

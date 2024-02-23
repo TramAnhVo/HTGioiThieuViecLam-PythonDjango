@@ -138,7 +138,7 @@ export default CompanyDetail = ({ route }) => {
             {companies === null ? <ActivityIndicator /> : <>
                 <View style={{ flex: 0.14, backgroundColor: 'lightblue', position: 'relative' }}></View>
                 <View style={styles.UserBar}>
-                    <Image source={{ uri: companies.image }} />
+                    <Image source={{ uri: companies.image }}  style={{width:100, height:100}}/>
                 </View>
 
                 <View style={{ flex: 0.86 }}>

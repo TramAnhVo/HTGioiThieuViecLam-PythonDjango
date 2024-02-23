@@ -11,7 +11,7 @@ import Register from "./components/Register";
 import JobDetails from "./components/JobDetail";
 import QLBD from "./components/QLBD";
 import TTDN from "./components/TTDN";
-import CompanyDeatail from "./components/CompanyDeatail";
+import CompanyDetail from "./components/CompanyDetail";
 import Account from "./components/Account";
 import AllJob from "./components/AllJob";
 import Company from "./components/Company";
@@ -74,7 +74,7 @@ export default MainComponent = function () {
                     {/* chi tiet cong viec */}
                     <Stack.Screen name="CTCV" component={JobDetails} options={{ headerShown: false }} />
                     {/* chi tiet cong ty */}
-                    <Stack.Screen name="CTDN" component={CompanyDeatail} options={{ headerShown: true, title: '' }} />
+                    <Stack.Screen name="CTDN" component={CompanyDetail} options={{ headerShown: true, title: '' }} />
                     {/* trang cac cong ty */}
                     <Stack.Screen name="CT" component={Company} options={{ headerShown: false }} />
                     {/* gửi CV */}

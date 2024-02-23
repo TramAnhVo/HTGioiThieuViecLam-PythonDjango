@@ -13,6 +13,7 @@ export default JobDetails = ({ route, navigation }) => {
     const windowWidth = useWindowDimensions().width;
     const { height } = Dimensions.get('window');
     const [jobs, setJobs] = useState(null)
+    const [companies, setCompanies] = useState(null)
     const { jobId } = route.params;
 
     useEffect(() => {
@@ -20,6 +21,14 @@ export default JobDetails = ({ route, navigation }) => {
             try {
                 let res = await API.get(endpoints['job-details'](jobId));
                 setJobs(res.data)
+
+                if (res.data.length > 0) {
+                    let firstItem = res.data[0];
+                    let com = await API.get(endpoints['company-details'](firstItem.id))
+                    setCompanies(com.data)
+                } else {
+                    console.log("Mảng trống");
+                }
                 // console.log(res.data)
             } catch (ex) {
                 console.error(ex);
@@ -46,11 +55,11 @@ export default JobDetails = ({ route, navigation }) => {
                 <View style={styles.UserBar}>
                     <View style={{ width: '30' }}>
                         {/* hinh khuc nay giup tui nha */}
-                        <Image source={require('../components/image/hinh.jpg')} style={styles.avatar} />
+                        <Image  source={{uri: companies.image}} style={styles.avatar} />
                     </View>
                     <View style={{ width: '60%' }}>
                         <Text style={{ textAlign: 'center', fontWeight: '700', fontSize: 18 }} >{jobs.title}</Text>
-                        <Text style={{ textAlign: 'center', fontSize: 17 }} >{jobs.company.name}</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 17 }} >{companies.name}</Text>
                     </View>
                 </View>
 

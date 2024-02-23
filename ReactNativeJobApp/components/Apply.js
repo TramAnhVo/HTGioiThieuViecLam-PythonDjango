@@ -119,7 +119,7 @@ export default Apply = ({ route, navigation }) => {
                             style={styles.button}
                             onPress={handleApply}
                         >
-                            <Text style={styles.text}> Upload CV </Text>
+                            <Text style={styles.text}> Ứng tuyển </Text>
                             <AntDesign color="#00b14f" name="upload" size={16} />
                         </TouchableOpacity>
                     </View>

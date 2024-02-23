@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Dimensions, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Octicons } from '@expo/vector-icons';
@@ -12,7 +11,7 @@ import Avatar from "./Avatar";
 const windownHeight = Dimensions.get('window').height;
 
 export default Account = ({ navigation }) => {
-    
+
     return (
         <View style={{ flex: 1 }}>
             <StatusBar barStyle='default' />
@@ -20,13 +19,13 @@ export default Account = ({ navigation }) => {
             <View style={{ flex: 0.2, backgroundColor: '#006400', position: 'relative' }}></View>
 
             {/* phan quan ly viec lam  */}
-            <View style={{ flex: 0.8, backgroundColor: 'white', marginTop: 0.15 * windownHeight, }}>
+            <View style={{ flex: 0.8, backgroundColor: 'white', marginTop: 0.12 * windownHeight, }}>
                 <Text style={styles.TextBar}>Quản lý công việc</Text>
                 <View style={styles.items}>
                     <View style={styles.item}>
-                        <TouchableOpacity onPress={() => navigation.navigate('SeeCV')}>
-                            <FontAwesome5 name="user-alt" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
-                            <Text style={styles.TextItem}>Quản lý hồ sơ ứng tuyển</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('DTTD')}>
+                            <MaterialCommunityIcons name="clipboard-file" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
+                            <Text style={styles.TextItem}>Đăng bài tin tuyển dụng </Text>
                         </TouchableOpacity>
                     </View>
 
@@ -46,29 +45,12 @@ export default Account = ({ navigation }) => {
                         </TouchableOpacity>
 
                     </View>
-                    <View style={styles.item}>
-                        <TouchableOpacity onPress={() => navigation.navigate('DTTD')}>
-                            <MaterialCommunityIcons name="clipboard-file" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
-                            <Text style={styles.TextItem}>Đăng bài tin tuyển dụng </Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
-
-                {/* <View style={styles.items}>
-                    <View style={styles.item}>
-                        <MaterialCommunityIcons name="eye" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
-                        <Text style={styles.TextItem}>Nhà tuyển dụng đã xem hồ sơ</Text>
-                    </View>
-                    <View style={styles.item}>
-                        <FontAwesome name="building" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
-                        <Text style={styles.TextItem}>Công ty đang theo dõi</Text>
-                    </View>
-                </View> */}
             </View>
 
             {/* phan de anh dai dien nguoi dung va ten nguoi dung */}
             <View style={styles.UserBar}>
-                <Avatar/>
+                <Avatar />
                 <View >
                     <Text style={{ fontSize: 20, textAlign: 'center' }}>Nguyễn Văn A</Text>
                     <Text styles={{ textAlign: 'center' }}>Nhà tuyển dụng</Text>
@@ -113,9 +95,10 @@ const styles = StyleSheet.create({
     },
 
     TextBar: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: "700",
-        marginLeft: 18
+        marginLeft: 18, 
+        padding: 5
     },
 
     TextItem: {

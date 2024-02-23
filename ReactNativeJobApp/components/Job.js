@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default Job = ({c,navigation}) => {
     const goToDetail = () => {
@@ -11,11 +11,12 @@ export default Job = ({c,navigation}) => {
             onPress={() => goToDetail()}>
             <View style={styles.ItemJob} key={c.id}>
                 <View style={{ width: '20%' }} >
-                    <Image source={require('../components/image/job.png')} style={styles.avatar} />
+                {/* source={require('../components/image/job.png')}  */}
+                    <Image style={styles.avatar}  source={{uri: c.company.image}}/>
                 </View>
                 <View style={{ width: '73%' }}>
                     <Text style={{ fontSize: 16, fontWeight: '700' }}>{c.title}</Text>
-                    <Text style={{ fontSize: 13, fontWeight: '400', textAlign: 'left' }}>{c.company.name}</Text>
+                    <Text style={{ fontSize: 13, fontWeight: '400', textAlign: 'left' }}>{c.company.name.toUpperCase()}</Text>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 4 }}>
                         <Text style={styles.TextTag}>{c.salary}</Text>
@@ -40,10 +41,22 @@ const styles= StyleSheet.create({
         backgroundColor: 'white',
         padding: 4
     },
+
     avatar: {
         width: 70,
         height: 70,
         borderRadius: 100,
         marginLeft: 10
+    },
+
+    TextTag: {
+        width: '45%',
+        fontSize: 13,
+        textAlign: 'center',
+        padding: 4,
+        borderColor: '#D0D0D0',
+        borderWidth: 1,
+        marginTop: 5,
+        marginBottom: 2,
     },
 })
