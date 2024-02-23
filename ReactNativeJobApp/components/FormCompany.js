@@ -82,6 +82,7 @@ export default FormCompany = ({ route, navigation }) => {
     };
     const handleSubmit = async () => {
         try {
+            console.log(dataUser);
             setLoading(true);
             const { data } = await API.post(endpoints[`register`], dataUser, {
                 headers: {

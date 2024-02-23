@@ -71,7 +71,6 @@ export default Apply = ({ route, navigation }) => {
         try {
             setLoading(true)
             const url = await uploadFirebase();
-            console.log(url);
             const res = await API.post(endpoints[`cv`], {
                 content: content,
                 user: user.id,

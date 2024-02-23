@@ -1,4 +1,4 @@
-import { ActivityIndicator, Dimensions, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native"
+import { ActivityIndicator, Alert, Dimensions, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native"
 import { Text, View } from "react-native"
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useContext, useState } from "react"
@@ -30,11 +30,19 @@ export default Login = ({ navigation }) => {
             });
             await AsyncStorage.setItem("access-token", data.access_token);
             let user = await authApi(data.access_token).get(endpoints['current-user']);
+            if(user.data.state===false&&user.data.role==='NTD'){
+                Alert.alert(
+                    'Chú ý',
+                    'Tài khoản của bạn chưa được kích hoạt',
+                    [{ text: 'OK', onPress: () => console.log('OK pressed') }],
+                    { cancelable: false }
+                );
+                return;
+            }
             dispatch({
                 type: "login",
                 payload: user.data
             });
-            console.log(user.data);
             navigation.navigate("HomeJob");
         } catch (error) {
             // Handle network errors or other exceptions

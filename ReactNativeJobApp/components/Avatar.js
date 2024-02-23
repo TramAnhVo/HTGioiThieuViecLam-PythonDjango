@@ -15,7 +15,6 @@ export default Avatar = () => {
     const [user,dispatch] = useContext(MyContext);
     useEffect(() => {
         setImgUrl(user.url_avatar || IMAGE_DEFAULT)
-        console.log(user);
     }, []);
     const handleCameraLaunch = async () => {
         const { granted } = await ImagePicker.requestCameraPermissionsAsync();

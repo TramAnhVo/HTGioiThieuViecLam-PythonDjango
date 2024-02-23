@@ -30,7 +30,6 @@ export default Home = ({ route, navigation }) => {
             try {
                 let res = await API.get(endpoints['companies']);
                 setCompanies(res.data)
-                // console.log(res.data)
             } catch (ex) {
                 console.error(ex);
             }
@@ -54,7 +53,7 @@ export default Home = ({ route, navigation }) => {
                     <View style={styles.Jobs}>
                         <Text style={styles.TextHead}>CÔNG VIỆC MỚI NHẤT</Text>
                         {jobs.map(c => (
-                            <Job navigation={navigation} c={c}/>
+                            <Job key={c.id} navigation={navigation} c={c}/>
                         ))}
                     </View>
                 </>}
@@ -68,7 +67,7 @@ export default Home = ({ route, navigation }) => {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: '2%', width: '100%', flexWrap: 'wrap' }}>
                         {companies.map(m => (
-                            <View style={styles.CompanyItem} >
+                            <View key={m.id} style={styles.CompanyItem} >
                                 <TouchableOpacity onPress={() => goToCompanyDetail(m.id)} >
                                     <View style={{ alignItems: 'center', justifyContent: 'center' }} >
                                         <Image source={require('../components/image/job.png')} style={styles.logo} />

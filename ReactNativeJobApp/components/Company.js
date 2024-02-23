@@ -10,7 +10,6 @@ export default DoanhNghiep = ({ navigation }) => {
             try {
                 let res = await API.get(endpoints['companies']);
                 setCompanies(res.data)
-                // console.log(res.data)
             } catch (ex) {
                 console.error(ex);
             }
