@@ -54,7 +54,7 @@ class CompanyAdmin(admin.ModelAdmin):
     lock_selected_accounts.short_description = "Lock selected accounts"
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'last_name', 'first_name', 'email', 'is_active', 'state', 'is_superuser']
+    list_display = ['pk', 'username', 'email', 'is_active', 'state', 'is_superuser']
     list_filter = ['is_active']
     search_fields = ['name']
     list_per_page = 20

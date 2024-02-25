@@ -22,7 +22,18 @@
     ],
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.nynguyen.ReactNativeDemo"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "60707e15-938e-4426-8adf-c80c45d49741"
+      }
+    }
   },
   "name": "ReactNativeDemo"
 }

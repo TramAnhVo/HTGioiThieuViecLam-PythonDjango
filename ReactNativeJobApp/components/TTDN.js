@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import MyContext from "../configs/MyContext";
-import API, { endpoints } from "../configs/API";
+import API, { authApi, endpoints } from "../configs/API";
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,7 +14,8 @@ export default ThongTinDoanhNghiep = () => {
     useEffect(() => {
         const loadCompany = async () => {
             try {
-                let res = await API.get(endpoints['company-user'](userId));
+                let token = await AsyncStorage.getItem('access-token');
+                let res = await authApi(token).get(endpoints['get-company-by-user'](userId));
                 setCompany(res.data)
             } catch (ex) {
                 console.error(ex);

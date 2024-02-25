@@ -28,10 +28,10 @@ class CompanySerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
     # moi quan he 1 nhieu => 1 major se co nhieu job
-    major = MajorSerializer(many=False)
-    location = LocationSerializer(many=False)
-    company = CompanySerializer(many=False)
-    position = PositionSerializer(many=False)
+    # major = MajorSerializer(many=False)
+    # location = LocationSerializer(many=False)
+    # company = CompanySerializer(many=False)
+    # position = PositionSerializer(many=False)
 
     class Meta:
         model = Job
@@ -40,7 +40,7 @@ class JobSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "first_name", "last_name", "url_avatar", "role", "username", "password", "email", "date_joined"]
+        fields = ["id", "first_name", "last_name", "location", "major", "url_avatar", "role", "username", "password", "email", "date_joined","state"]
         extra_kwargs = {
             'password': {
                 'write_only': True

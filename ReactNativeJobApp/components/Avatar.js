@@ -104,7 +104,7 @@ export default Avatar = () => {
     const updateAvatar = async (url) => {
         try {
             // let user = await authApi(data.access_token).get(endpoints['current-user']);
-            const res = await API.patch(endpoints[`update-user`](user.id), { "url_avatar": url })
+            const res = await API.patch(endpoints[`update-user`](user.id), { "avatar": url })
             dispatch({
                 type: "login",
                 payload: res.data

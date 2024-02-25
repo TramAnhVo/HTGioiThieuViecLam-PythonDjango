@@ -3,11 +3,10 @@ import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "r
 
 export default Job = ({c,navigation}) => {
     const goToDetail = () => {
-        console.log(c.id);
         navigation.navigate("CTCV", {"jobId": c.id})
     }
     return (
-        <TouchableOpacity key={c.id}
+        <TouchableOpacity
             onPress={() => goToDetail()}>
             <View style={styles.ItemJob} key={c.id}>
                 <View style={{ width: '20%' }} >

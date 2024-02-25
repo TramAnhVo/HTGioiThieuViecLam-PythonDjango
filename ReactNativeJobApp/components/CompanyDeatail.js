@@ -17,7 +17,6 @@ export default CompanyDetail = ({ route }) => {
             try {
                 let res = await API.get(endpoints['company-details'](companyId));
                 setCompanies(res.data)
-                // console.log(res.data)
             } catch (ex) {
                 console.error(ex);
             }
@@ -27,7 +26,6 @@ export default CompanyDetail = ({ route }) => {
             try {
                 let res = await API.get(endpoints['job-company'](companyId));
                 setJobs(res.data)
-                // console.log(res.data)
             } catch (ex) {
                 console.error(ex);
             }

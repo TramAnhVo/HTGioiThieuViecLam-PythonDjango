@@ -91,7 +91,15 @@ class CompanyView(viewsets.ViewSet,
             queries = queries.filter(name__icontains=q)
 
         return queries
-
+    @action(methods=['get'], detail=False)
+    def get_companies_by_user(self, request):
+        user = request.user
+        if user.is_authenticated:
+            companies = Company.objects.filter(user=user)
+            serializer = self.serializer_class(companies, many=True, context={'request': request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "User is not authenticated."}, status=status.HTTP_401_UNAUTHORIZED)
 
 class JobView(viewsets.ViewSet,
               generics.RetrieveAPIView,

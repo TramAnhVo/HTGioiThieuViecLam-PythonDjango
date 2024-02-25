@@ -36,11 +36,11 @@ export default Home = ({ route, navigation }) => {
         }
 
         loadJob();
-        loadCompany();      
+        loadCompany();
     }, []);
 
     const goToCompanyDetail = (companyId) => {
-        navigation.navigate("CTDN", {"companyId": companyId})
+        navigation.navigate("CTDN", { "companyId": companyId })
     }
 
     return (
@@ -53,7 +53,7 @@ export default Home = ({ route, navigation }) => {
                     <View style={styles.Jobs}>
                         <Text style={styles.TextHead}>CÔNG VIỆC MỚI NHẤT</Text>
                         {jobs.map(c => (
-                            <Job key={c.id} navigation={navigation} c={c}/>
+                            <Job key={c.id} navigation={navigation} c={c} />
                         ))}
                     </View>
                 </>}
@@ -61,28 +61,28 @@ export default Home = ({ route, navigation }) => {
                 {/* cac cong ty noi bat */}
                 {/* <DoanhNghiep /> */}
                 <View>
-            {companies === null ? <ActivityIndicator /> : <>
-                <View style={{ marginBottom: 10, marginRight: '3%', marginLeft: '3%', }}>
-                    <Text style={styles.TextHead}>TOP CÔNG TY NỔI BẬT</Text>
+                    {companies === null ? <ActivityIndicator /> : <>
+                        <View style={{ marginBottom: 10, marginRight: '3%', marginLeft: '3%', }}>
+                            <Text style={styles.TextHead}>TOP CÔNG TY NỔI BẬT</Text>
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: '2%', width: '100%', flexWrap: 'wrap' }}>
-                        {companies.map(m => (
-                            <View key={m.id} style={styles.CompanyItem} >
-                                <TouchableOpacity onPress={() => goToCompanyDetail(m.id)} >
-                                    <View style={{ alignItems: 'center', justifyContent: 'center' }} >
-                                        <Image source={require('../components/image/job.png')} style={styles.logo} />
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: '2%', width: '100%', flexWrap: 'wrap' }}>
+                                {companies.map(m => (
+                                    <View key={m.id} style={styles.CompanyItem} >
+                                        <TouchableOpacity onPress={() => goToCompanyDetail(m.id)} >
+                                            <View style={{ alignItems: 'center', justifyContent: 'center' }} >
+                                                <Image source={require('../components/image/job.png')} style={styles.logo} />
+                                            </View>
+                                            <View >
+                                                <Text style={{ textAlign: 'center', marginTop: 10, fontWeight: "700", }}>{m.name}</Text>
+                                            </View>
+                                        </TouchableOpacity>
                                     </View>
-                                    <View >
-                                        <Text style={{ textAlign: 'center', marginTop: 10, fontWeight: "700", }}>{m.name}</Text>
-                                    </View>
-                                </TouchableOpacity>
+                                ))}
                             </View>
-                        ))}
-                    </View>
 
+                        </View>
+                    </>}
                 </View>
-            </>}
-        </View>
 
             </ScrollView>
         </View>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         justifyContent: 'space-between',
         borderWidth: 1.5,
-        borderColor: '#008000', 
+        borderColor: '#008000',
         backgroundColor: 'white',
         padding: 4
     },

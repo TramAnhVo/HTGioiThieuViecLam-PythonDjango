@@ -20,7 +20,7 @@ export default Login = ({ navigation }) => {
     const login = async () => {
         setLoading(true);
         try {
-            const {data} = await API.post(endpoints['login'], {
+            const { data } = await API.post(endpoints['login'], {
                 "username": username,
                 "password": password,
                 "client_id": CLIENT_ID,
@@ -29,7 +29,7 @@ export default Login = ({ navigation }) => {
             });
             await AsyncStorage.setItem("access-token", data.access_token);
             let user = await authApi(data.access_token).get(endpoints['current-user']);
-            if(user.data.state===false&&user.data.role==='NTD'){
+            if (user.data.state === false && user.data.role === 'NTD') {
                 Alert.alert(
                     'Chú ý',
                     'Tài khoản của bạn chưa được kích hoạt',
@@ -42,7 +42,9 @@ export default Login = ({ navigation }) => {
                 type: "login",
                 payload: user.data
             });
-            navigation.navigate("HomeJob");
+            if (user.data.role==="NTD"){
+                navigation.navigate("HomeCompany");
+            }else navigation.navigate("HomeJob");
         } catch (error) {
             // Handle network errors or other exceptions
             console.error('An error occurred during login: ', error);
@@ -77,7 +79,7 @@ export default Login = ({ navigation }) => {
                         <Entypo onPress={() => showPass()}
                             style={{ position: 'absolute', right: 8 }} name={showPassword ? 'eye' : 'eye-with-line'} color="black" size={30} />
                     </View>
-                    
+
                 </View>
 
                 {/* Quen mat khau */}

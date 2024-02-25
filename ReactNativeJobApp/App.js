@@ -19,6 +19,7 @@ import MyContext from "./configs/MyContext";
 import MyUserReducer from "./reducers/MyUserReducer";
 import Apply from "./components/Apply";
 import FormCompany from "./components/FormCompany";
+import { JobCompany } from "./components/Job_Company";
 
 
 
@@ -54,6 +55,36 @@ function HomeJob() {
         </Tab.Navigator>
     );
 }
+function HomeCompany() {
+    return (
+        <Tab.Navigator initialRouteName="Login" screenOptions={({ route }) => ({
+            tabBarIcon: ({ color, size }) => {
+                let iconName;
+
+                if (route.name === 'JobCompany') {
+                    iconName = 'home';
+                } else if (route.name === 'Account') {
+                    iconName = 'person';
+                } else if (route.name === 'Jobs') {
+                    iconName = 'clipboard';
+                }
+
+                return <Ionicons name={iconName} size={size} color={color} />;
+            },
+
+            tabBarActiveTintColor: 'green',
+            tabBarInactiveTintColor: 'black',
+            headerShown: false,
+        })}>
+
+            <Tab.Screen name="JobCompany" component={JobCompany} options={{ title: 'Trang chủ' }} />
+
+            <Tab.Screen name="Jobs" component={AllJob} options={{ title: 'Công việc1' }} />
+
+            <Tab.Screen name="Account" component={Account} options={{ title: 'Tài khoản' }} />
+        </Tab.Navigator>
+    );
+}
 
 export default MainComponent = function () {
     const [user, dispatch] = useReducer(MyUserReducer, null);
@@ -61,7 +92,8 @@ export default MainComponent = function () {
         <MyContext.Provider value={[user, dispatch]}>
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="Login" options={{ headerShown: false }}>
-                    <Stack.Screen name="HomeJob" component={HomeJob} options={{ headerShown: false }} />
+                    <Stack.Screen name="HomeCompany" component={HomeCompany} options={{ headerShown: false }} />
+                    <Stack.Screen name="HomeJob" component={HomeJob} options={{ headerShown: false }}/>
                     <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
                     <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                     <Stack.Screen name="SeeCV" component={SeeCV} options={{ headerShown: false }} />

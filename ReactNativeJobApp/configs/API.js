@@ -3,7 +3,7 @@ import axios from "axios";
 export const endpoints = {
     'jobs': `/jobs/`,
     'job-details': (jobId) => `/jobs/${jobId}/`,
-
+    'get-company-by-user':'/companies/get_companies_by_user/',
     'companies':'/companies/',
     'company-details': (companyId) => `/companies/${companyId}/`,
     'job-company':  (companyId) => `/companies/${companyId}/jobs/`,
@@ -13,6 +13,9 @@ export const endpoints = {
     'current-user': '/users/current-user/',
     'register': '/users/',
     'update-user': (userId) => `/users/${userId}/`,
+    'locations':'/locations/',
+    'majors':'/majors/',
+    'positions':'/positions/'
 }
 
 export const authApi = (accessToken) => axios.create({
