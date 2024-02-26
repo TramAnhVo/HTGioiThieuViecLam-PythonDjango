@@ -77,7 +77,8 @@ export default Login = ({ navigation }) => {
                     </View>
                     <View style={{ backgroundColor: "#F0F0F0", marginTop: 0.015 * heightWindow, borderRadius: 100, padding: 12, width: '80%', height: '30px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Fontisto style={{ paddingLeft: 24 }} name='locked' color="black" size={30} />
-                        <TextInput onChangeText={(text) => setPassword(text)}
+                        <TextInput value={password} 
+                            onChangeText={(text) => setPassword(text)}
                             placeholder="Nhập mật khẩu" style={{ color: 'black', width: '75%', height: '100%' }}
                             autoCapitalize="none"
                             secureTextEntry={showPassword ? false : true} />
