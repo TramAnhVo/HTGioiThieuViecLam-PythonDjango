@@ -1,22 +1,20 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default Job = ({c,navigation}) => {
     const goToDetail = () => {
-        console.log(c.id);
         navigation.navigate("CTCV", {"jobId": c.id})
     }
     return (
-        <TouchableOpacity key={c.id}
+        <TouchableOpacity
             onPress={() => goToDetail()}>
             <View style={styles.ItemJob} key={c.id}>
                 <View style={{ width: '20%' }} >
-                {/* source={require('../components/image/job.png')}  */}
-                    <Image style={styles.avatar}  source={{uri: c.company.image}}/>
+                    <Image source={{uri: c.company.image}} style={styles.avatar} />
                 </View>
                 <View style={{ width: '73%' }}>
                     <Text style={{ fontSize: 16, fontWeight: '700' }}>{c.title}</Text>
-                    <Text style={{ fontSize: 13, fontWeight: '400', textAlign: 'left' }}>{c.company.name.toUpperCase()}</Text>
+                    <Text style={{ fontSize: 13, fontWeight: '400', textAlign: 'left' }}>{c.company.name}</Text>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 4 }}>
                         <Text style={styles.TextTag}>{c.salary}</Text>

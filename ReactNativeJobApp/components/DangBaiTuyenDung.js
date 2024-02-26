@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -6,31 +6,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
-
-const data = [
-    { label: 'Hồ Chí Ninh', value: '1' },
-    { label: 'Hà Nội', value: '2' },
-    { label: 'Hải Phòng', value: '3' },
-    { label: 'Đà Nẵng', value: '4' },
-    { label: 'Bình Dương', value: '5' },
-    { label: 'Đồng Nai', value: '6' },
-];
-
-const position = [
-    { label: 'Nhân viên chính thức', value: '1' },
-    { label: 'Thực tập sinh', value: '2' },
-    { label: 'Nhân viên bán thời gian', value: '3' },
-    { label: 'Quản lý', value: '4' },
-    { label: 'Giám đốc', value: '5' },
-];
-
-const major = [
-    { label: 'Kinh doanh/bán hàng', value: '1' },
-    { label: 'Công nghệ thông tin', value: '2' },
-    { label: 'Giao thông vận tải', value: '3' },
-    { label: 'Kế toán kiểm toán', value: '4' },
-    { label: 'Marketing truyền thông quảng cáo', value: '5' },
-];
+import API, { endpoints } from "../configs/API";
+import MyContext from "../configs/MyContext";
 
 const salary = [
     { label: '2tr - 3tr', value: '1' },
@@ -52,30 +29,59 @@ const experience = [
     { label: '2-3 năm kinh nghiệm', value: '5' },
     { label: 'Dưới 5 năm kinh nghiệm', value: '6' },
     { label: 'Trên 5 năm kinh nghiệm', value: '7' },
-   
+
 ];
 
-export default DangTinTuyenDung = () => {
+export default DangTinTuyenDung = ({navigation}) => {
     // dia diem
-    const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
     // nganh nghe
-    const [value1, setValue1] = useState(null);
     const [isFocus1, setIsFocus1] = useState(false);
 
     // cap bac
-    const [value2, setValue2] = useState(null);
     const [isFocus2, setIsFocus2] = useState(false);
 
     // luong 
-    const [value3, setValue3] = useState(null);
     const [isFocus3, setIsFocus3] = useState(false);
 
     // kinh nghiem
-    const [value4, setValue4] = useState(null);
     const [isFocus4, setIsFocus4] = useState(false);
 
+    const [majors, setMajor] = useState([]);
+    const [positions, setPosition] = useState([]);
+    const [locations, setLocation] = useState([]);
+    const [user] = useContext(MyContext);
+    useEffect(() => {
+        const loadData = async () => {
+            let res = await API.get(endpoints[`locations`]);
+            setLocation(res.data);
+            res = await API.get(endpoints[`majors`]);
+            setMajor(res.data)
+            res = await API.get(endpoints[`positions`]);
+            setPosition(res.data)
+        }
+        loadData();
+    },[]);
+    const [formData, setFormData] = useState({
+        description: '',
+        title: '',
+        requirement: '',
+        experience: '',
+        salary: '',
+        out_off_date: '',
+        location: '',
+        major:'',
+        position:'',
+        company:user.id,
+    });
+    const handleChangeInfo = (key, value) => {
+        setFormData({ ...formData, [key]: value });
+    };
+    const handleSubmit=async()=>{
+        const res=await API.post(endpoints[`jobs`],(formData));
+        navigation.navigate("HomeCompany",{screen:'JobCompany'});
+    }
     return (
         <View style={{ flex: 1 }}>
             <Text style={{ textAlign: 'center', fontWeight: "700", fontSize: 22, margin: 6 }}>ĐĂNG TIN TUYỂN DỤNG</Text>
@@ -83,19 +89,25 @@ export default DangTinTuyenDung = () => {
             <ScrollView>
                 <View style={styles.items}>
                     <FontAwesome5 name="pen-alt" size={30} color="#2E8B57" style={{ paddingLeft: 24 }} />
-                    <TextInput placeholder="Vị trí tuyển dụng" style={{ color: 'black', width: '75%', height: '100%', fontSize: 16 }} autoCapitalize="none" />
+                    <TextInput value={formData.title} 
+                    onChangeText={(text) => handleChangeInfo('title', text)} 
+                    placeholder="Tiêu đề tuyển dụng" style={{ color: 'black', width: '75%', height: '100%', fontSize: 16 }} autoCapitalize="none" />
                 </View>
 
                 <View style={styles.items}>
                     <MaterialCommunityIcons name="clipboard-file" size={30} color="#2E8B57" style={{ paddingLeft: 24 }} />
-                    <TextInput placeholder="Miêu tả việc làm" style={{ color: 'black', width: '75%', height: '100%', fontSize: 16 }} autoCapitalize="none" />
+                    <TextInput value={formData.description} 
+                    onChangeText={(text) => handleChangeInfo('description', text)} 
+                    placeholder="Miêu tả việc làm" style={{ color: 'black', width: '75%', height: '100%', fontSize: 16 }} autoCapitalize="none" />
                 </View>
 
                 <View style={styles.items}>
                     <MaterialCommunityIcons name="clipboard-file" size={30} color="#2E8B57" style={{ paddingLeft: 24 }} />
-                    <TextInput placeholder="Yêu cầu việc làm" style={{ color: 'black', width: '75%', height: '100%', fontSize: 16 }} autoCapitalize="none" />
+                    <TextInput value={formData.requirement}
+                    onChangeText={(text) => handleChangeInfo('requirement', text)} 
+                    placeholder="Yêu cầu việc làm" style={{ color: 'black', width: '75%', height: '100%', fontSize: 16 }} autoCapitalize="none" />
                 </View>
-                
+
                 {/* kinh nghiem */}
                 <Dropdown
                     style={[styles.dropdown, isFocus3 && { borderColor: 'black' }]}
@@ -110,18 +122,18 @@ export default DangTinTuyenDung = () => {
                     valueField="value"
                     placeholder={!isFocus3 ? 'Chọn kinh nghiệm' : '...'}
                     searchPlaceholder="Tìm kiếm..."
-                    value={value3}
+                    value={formData.experience}
                     onFocus={() => setIsFocus3(true)}
                     onBlur={() => setIsFocus3(false)}
                     onChange={item => {
-                        setValue3(item.value3);
+                        handleChangeInfo('experience', item.label)
                         setIsFocus3(false);
                     }}
                     renderLeftIcon={() => (
                         <MaterialCommunityIcons name="clipboard-file" size={30} color="#2E8B57" style={{ paddingLeft: 24, paddingRight: 24 }} />
                     )}
                 />
-                
+
                 {/* luong  */}
                 <Dropdown
                     style={[styles.dropdown, isFocus4 && { borderColor: 'black' }]}
@@ -136,11 +148,11 @@ export default DangTinTuyenDung = () => {
                     valueField="value"
                     placeholder={!isFocus4 ? 'Chọn lương' : '...'}
                     searchPlaceholder="Tìm kiếm..."
-                    value={value4}
+                    value={formData.salary}
                     onFocus={() => setIsFocus4(true)}
                     onBlur={() => setIsFocus4(false)}
                     onChange={item => {
-                        setValue4(item.value4);
+                        handleChangeInfo('salary', item.label)
                         setIsFocus4(false);
                     }}
                     renderLeftIcon={() => (
@@ -155,18 +167,18 @@ export default DangTinTuyenDung = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={data}
+                    data={locations.map(location => ({ label: location.name, value: location.id }))}
                     search
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
                     placeholder={!isFocus ? 'Chọn địa điểm' : '...'}
                     searchPlaceholder="Tìm kiếm..."
-                    value={value}
+                    value={formData.location}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     onChange={item => {
-                        setValue(item.value);
+                        handleChangeInfo('location', item.value)
                         setIsFocus(false);
                     }}
                     renderLeftIcon={() => (
@@ -181,18 +193,18 @@ export default DangTinTuyenDung = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={major}
+                    data={majors.map(major => ({ label: major.name, value: major.id }))}
                     search
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
                     placeholder={!isFocus1 ? 'Chọn ngành nghề' : '...'}
                     searchPlaceholder="Tìm kiếm..."
-                    value={value1}
+                    value={formData.major}
                     onFocus={() => setIsFocus1(true)}
                     onBlur={() => setIsFocus1(false)}
                     onChange={item => {
-                        setValue1(item.value1);
+                        handleChangeInfo('major', item.value)
                         setIsFocus1(false);
                     }}
                     renderLeftIcon={() => (
@@ -207,18 +219,18 @@ export default DangTinTuyenDung = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={position}
+                    data={positions.map(position => ({ label: position.name, value: position.id }))}
                     search
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
                     placeholder={!isFocus2 ? 'Chọn cấp bậc' : '...'}
                     searchPlaceholder="Tìm kiếm..."
-                    value={value2}
+                    value={formData.position}
                     onFocus={() => setIsFocus2(true)}
                     onBlur={() => setIsFocus2(false)}
                     onChange={item => {
-                        setValue2(item.value2);
+                        handleChangeInfo('position', item.value)
                         setIsFocus2(false);
                     }}
                     renderLeftIcon={() => (
@@ -228,10 +240,13 @@ export default DangTinTuyenDung = () => {
 
                 <View style={styles.items}>
                     <FontAwesome5 name="calendar-times" size={30} color="#2E8B57" style={{ paddingLeft: 24 }} />
-                    <TextInput placeholder="Ngày hết hạn" style={{ color: 'black', width: '75%', height: '100%', fontSize: 16 }} autoCapitalize="none" />
+                    <TextInput value={formData.out_off_date} 
+                    onChangeText={(text) => handleChangeInfo('out_off_date', text)} 
+                    placeholder="Ngày hết hạn" style={{ color: 'black', width: '75%', height: '100%', fontSize: 16 }} autoCapitalize="none" />
                 </View>
 
-                <TouchableOpacity style={styles.btnDang}>
+                <TouchableOpacity onPress={handleSubmit} 
+                    style={styles.btnDang}>
                     <Text style={styles.textBtn}>ĐĂNG BÀI</Text>
                 </TouchableOpacity>
             </ScrollView>

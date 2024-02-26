@@ -1,4 +1,4 @@
-import { ActivityIndicator, Dimensions, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native"
+import { ActivityIndicator, Alert, Dimensions, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native"
 import { Text, View } from "react-native"
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useContext, useState } from "react"
@@ -8,7 +8,6 @@ import API, { authApi, endpoints } from "../configs/API"
 import { CLIENT_ID, CLIENT_SECRET } from "../utils/key"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import MyContext from "../configs/MyContext"
-import { MyCheckBox } from "./CheckBox"
 
 export default Login = ({ navigation }) => {
     const heightWindow = Dimensions.get("window").height;
@@ -21,7 +20,7 @@ export default Login = ({ navigation }) => {
     const login = async () => {
         setLoading(true);
         try {
-            const {data} = await API.post(endpoints['login'], {
+            const { data } = await API.post(endpoints['login'], {
                 "username": username,
                 "password": password,
                 "client_id": CLIENT_ID,
@@ -30,15 +29,31 @@ export default Login = ({ navigation }) => {
             });
             await AsyncStorage.setItem("access-token", data.access_token);
             let user = await authApi(data.access_token).get(endpoints['current-user']);
+            if (user.data.state === false && user.data.role === 'NTD') {
+                Alert.alert(
+                    'Chú ý',
+                    'Tài khoản của bạn chưa được kích hoạt',
+                    [{ text: 'OK', onPress: () => console.log('OK pressed') }],
+                    { cancelable: false }
+                );
+                return;
+            }
             dispatch({
                 type: "login",
                 payload: user.data
             });
-            console.log(user.data);
-            navigation.navigate("HomeJob");
+            setPassword(null)
+            setUsername(null)
+            if (user.data.role === "NTD") {
+                navigation.navigate("HomeCompany");
+            } else navigation.navigate("HomeJob");
         } catch (error) {
-            // Handle network errors or other exceptions
-            console.error('An error occurred during login: ', error);
+            Alert.alert(
+                'Lỗi',
+                'Thông tin tài khoản không đúng',
+                [{ text: 'OK', onPress: () => console.log('OK pressed') }],
+                { cancelable: false }
+            );
         }
         finally {
             setLoading(false);
@@ -58,6 +73,7 @@ export default Login = ({ navigation }) => {
                     <View style={{ backgroundColor: "#F0F0F0", borderRadius: 100, padding: 12, width: '80%', height: '30px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Fontisto style={{ paddingLeft: 24 }} name='email' color="black" size={30} />
                         <TextInput onChangeText={(text) => setUsername(text)}
+                            value={username}
                             placeholder="Ten nguoi dung" style={{ color: 'black', width: '75%', height: '100%' }}
                             autoCapitalize="none" />
                     </View>
@@ -66,13 +82,12 @@ export default Login = ({ navigation }) => {
                         <TextInput onChangeText={(text) => setPassword(text)}
                             placeholder="Nhập mật khẩu" style={{ color: 'black', width: '75%', height: '100%' }}
                             autoCapitalize="none"
+                            value={password}
                             secureTextEntry={showPassword ? false : true} />
                         <Entypo onPress={() => showPass()}
                             style={{ position: 'absolute', right: 8 }} name={showPassword ? 'eye' : 'eye-with-line'} color="black" size={30} />
                     </View>
-                    <View style={styles.checkBox}>
-                        <MyCheckBox/>
-                    </View>
+
                 </View>
 
                 {/* Quen mat khau */}
@@ -150,11 +165,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderColor: 'grey'
-    },
-    checkBox:{
-        marginTop: 12,
-        marginLeft:8,
-        width:"80%",
     }
 
 });

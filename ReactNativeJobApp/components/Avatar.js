@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Button, Modal, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native';
+import { View, Modal, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { storage } from "../configs/storage";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -14,9 +14,9 @@ export default Avatar = () => {
                   
     const [user,dispatch] = useContext(MyContext);
     useEffect(() => {
-        setImgUrl(user.url_avatar || IMAGE_DEFAULT)
-        console.log(user);
+        setImgUrl(user.avatar || IMAGE_DEFAULT)
     }, []);
+    
     const handleCameraLaunch = async () => {
         const { granted } = await ImagePicker.requestCameraPermissionsAsync();
         if (granted) {
@@ -105,7 +105,8 @@ export default Avatar = () => {
     const updateAvatar = async (url) => {
         try {
             // let user = await authApi(data.access_token).get(endpoints['current-user']);
-            const res = await API.patch(endpoints[`update-user`](user.id), { "url_avatar": url })
+            const res = await API.patch(endpoints[`update-user`](user.id), { "avatar": url })
+            console.log(res.data)
             dispatch({
                 type: "login",
                 payload: res.data

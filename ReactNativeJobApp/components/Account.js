@@ -1,59 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Dimensions, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Octicons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import React, { useContext } from "react";
+import { Dimensions, StatusBar, StyleSheet, Text, View } from "react-native";
 import Avatar from "./Avatar";
+import MyContext from "../configs/MyContext";
+import { MenuCompany } from "./MenuCompany";
+import InforUser from "./InforUser";
 
 
 const windownHeight = Dimensions.get('window').height;
 
 export default Account = ({ navigation }) => {
 
+    const [user] = useContext(MyContext);
     return (
         <View style={{ flex: 1 }}>
-            <StatusBar barStyle='default' />
-            {/* nen mau xanh dùng de thet ke */}
+            <StatusBar barStyle='default'/>
             <View style={{ flex: 0.2, backgroundColor: '#006400', position: 'relative' }}></View>
+            <View style={{ flex: 0.8, backgroundColor: 'white', marginTop: 0.15 * windownHeight, }}>
 
-            {/* phan quan ly viec lam  */}
-            <View style={{ flex: 0.8, backgroundColor: 'white', marginTop: 0.12 * windownHeight, }}>
-                <Text style={styles.TextBar}>Quản lý công việc</Text>
-                <View style={styles.items}>
-                    <View style={styles.item}>
-                        <TouchableOpacity onPress={() => navigation.navigate('DTTD')}>
-                            <MaterialCommunityIcons name="clipboard-file" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
-                            <Text style={styles.TextItem}>Đăng bài tin tuyển dụng </Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.item}>
-                        <TouchableOpacity onPress={() => navigation.navigate('QLBD')}>
-                            <FontAwesome name="briefcase" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
-                            <Text style={styles.TextItem}>Quản lý bài đăng tin tuyển dụng</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <View style={styles.items}>
-                    <View style={styles.item}>
-                        <TouchableOpacity onPress={() => navigation.navigate('TTDN')}>
-                            <FontAwesome name="building" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
-                            <Text style={styles.TextItem}>Hồ sơ thông tin doanh nghiệp</Text>
-                        </TouchableOpacity>
-
-                    </View>
-                </View>
+                {user.role ? <InforUser user={user} navigation={navigation}/>:<MenuCompany navigation={navigation}/> }
             </View>
 
             {/* phan de anh dai dien nguoi dung va ten nguoi dung */}
             <View style={styles.UserBar}>
                 <Avatar />
                 <View >
-                    <Text style={{ fontSize: 20, textAlign: 'center' }}>Nguyễn Văn A</Text>
-                    <Text styles={{ textAlign: 'center' }}>Nhà tuyển dụng</Text>
+                    <Text style={{ fontSize: 20, textAlign: 'center' }}>{user.role?user.username:user.name}</Text>
+                    <Text style={{ textAlign: 'center' }}>{user.role ? 'Ứng viên' : 'Nhà tuyển dụng'}</Text>
                 </View>
             </View>
         </View>
@@ -95,9 +67,9 @@ const styles = StyleSheet.create({
     },
 
     TextBar: {
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: "700",
-        marginLeft: 18, 
+        marginLeft: 18,
         padding: 5
     },
 

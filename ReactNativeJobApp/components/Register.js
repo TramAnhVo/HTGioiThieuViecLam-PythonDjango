@@ -6,6 +6,7 @@ import Entypo from "react-native-vector-icons/Entypo"
 import { useState } from "react"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import API, { endpoints } from "../configs/API"
+import { MyCheckBox } from "./CheckBox"
 
 
 const heightWindow = Dimensions.get("window").height;
@@ -13,7 +14,7 @@ const heightWindow = Dimensions.get("window").height;
 export default Register = ({ navigation }) => {
     const [err, setErr] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);                                                  
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const showPass = () => setShowPassword(!showPassword);
     const showPassConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
     const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -21,6 +22,8 @@ export default Register = ({ navigation }) => {
     const [isValidEmail, setIsValidEmail] = useState(false);
     const [isValidUsername, setIsValidUsername] = useState(false);
     const [isValidPassword, setIsValidPassword] = useState(false);
+    const [isCompany, setCompany] = useState(false);
+    const [isChecked, setChecked] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         username: '',
@@ -31,18 +34,18 @@ export default Register = ({ navigation }) => {
         setIsValidPassword(false);
         setIsValidUsername(false);
         setStateConfirm(false);
-        let status=false;
+        let status = false;
         if (formData.email === '') {
             setIsValidEmail(true);
-            status=true;
+            status = true;
         }
         if (formData.username === '') {
             setIsValidUsername(true);
-            status=true;
+            status = true;
         }
         if (formData.password === '') {
             setIsValidPassword(true);
-            status=true;
+            status = true;
         }
         return status;
     }
@@ -53,15 +56,24 @@ export default Register = ({ navigation }) => {
         }
         try {
             if (formData.username) {
-                const res = await API.post(endpoints[`register`], formData, {
+                console.log(formData.username)
+                if (isChecked) {
+                    const updatedFormData = { ...formData };
+                    updatedFormData.role = 'NTD';
+                    navigation.navigate("FormCompany", { dataUser: updatedFormData });
+                    return;
+                }
+                await API.post(endpoints[`register`], formData, {
                     headers: {
                         'Content-Type': 'application/json', 'charset': 'utf-8'
                     }
                 });
-                ToastAndroid.show('Register successfully!', ToastAndroid.SHORT);
+                navigation.navigate('Login');
+                ToastAndroid.show('Đăng ký thành công!', ToastAndroid.SHORT);
             }
         } catch (error) {
-            console.log("err",error);
+            // setErr(true);
+            console.log("err", error);
         }
     }
     const handleChangeInfo = (key, value) => {
@@ -76,13 +88,6 @@ export default Register = ({ navigation }) => {
                 </View>
                 {/* Tên, Email, Mật khẩu, Nhập lại mật khẩu */}
                 <View style={styles.form}>
-                    <View style={{...styles.input,borderWidth: isValidUsername ? 1:0}}>
-                        <MaterialCommunityIcons style={{ paddingLeft: 24 }} name='account' color="black" size={30} />
-                        <TextInput placeholder="Ten nguoi dung" style={styles.textInput}
-                            onChangeText={(text) => handleChangeInfo('username', text)}
-                            value={formData.username}
-                            autoCapitalize="none" />
-                    </View>
                     {isValidUsername ?
                         <View style={styles.messageErr}>
                             <MaterialIcons name="error-outline" size={12} color="red" />
@@ -94,7 +99,20 @@ export default Register = ({ navigation }) => {
                             </View>
                             : <></>
                     }
-                    <View style={{ ...styles.input, marginTop: 0.015 * heightWindow }}>
+                    <View style={{ ...styles.input, borderWidth: isValidUsername ? 1 : 0 }}>
+                        <MaterialCommunityIcons style={{ paddingLeft: 24 }} name='account' color="black" size={30} />
+                        <TextInput placeholder="Ten nguoi dung" style={styles.textInput}
+                            onChangeText={(text) => handleChangeInfo('username', text)}
+                            value={formData.username}
+                            autoCapitalize="none" />
+                    </View>
+                    {isValidEmail &&
+                        <View style={styles.messageErr}>
+                            <MaterialIcons name="error-outline" size={12} color="red" />
+                            <Text style={styles.err}>Cho chúng tôi biết eamil của bạn</Text>
+                        </View>
+                    }
+                    <View style={{ ...styles.input, borderWidth: isValidEmail ? 1 : 0,marginTop: 0.01 * heightWindow }}>
                         <Fontisto style={{ paddingLeft: 24 }} name='email' color="black" size={30} />
                         <TextInput
                             placeholder="Email" style={styles.textInput}
@@ -103,13 +121,13 @@ export default Register = ({ navigation }) => {
                             keyboardType="email-address"
                             autoCapitalize="none" />
                     </View>
-                    {isValidEmail &&
+                    {isValidPassword &&
                         <View style={styles.messageErr}>
                             <MaterialIcons name="error-outline" size={12} color="red" />
-                            <Text style={styles.err}>Cho chúng tôi biết eamil của bạn</Text>
+                            <Text style={styles.err}>Nhập mật khẩu của bạn</Text>
                         </View>
-                        }
-                    <View style={{ ...styles.input, marginTop: 0.015 * heightWindow }}>
+                    }
+                    <View style={{ ...styles.input, borderWidth: isValidPassword ? 1 : 0,marginTop: 0.01 * heightWindow }}>
                         <Fontisto style={{ paddingLeft: 24 }} name='locked' color="black" size={30} />
                         <TextInput placeholder="Nhập mật khẩu" style={styles.textInput}
                             onChangeText={(text) => handleChangeInfo('password', text)}
@@ -119,13 +137,13 @@ export default Register = ({ navigation }) => {
                         <Entypo onPress={() => showPass()}
                             style={{ position: 'absolute', right: 8 }} name={showPassword ? 'eye-with-line' : 'eye'} color="black" size={30} />
                     </View>
-                    {isValidPassword &&
+                    {stateConfirm &&
                         <View style={styles.messageErr}>
                             <MaterialIcons name="error-outline" size={12} color="red" />
-                            <Text style={styles.err}>Nhập mật khẩu của bạn</Text>
+                            <Text style={styles.err}>Mẩu khẩu của bạn không trùng khớp</Text>
                         </View>
-                        }
-                    <View style={{ ...styles.input, marginTop: 0.015 * heightWindow }}>
+                    }
+                    <View style={{ ...styles.input, borderWidth: stateConfirm ? 1 : 0,marginTop: 0.01 * heightWindow }}>
                         <Fontisto style={{ paddingLeft: 24 }} name='locked' color="black" size={30} />
                         <TextInput placeholder="Nhập lại mật khẩu" style={styles.textInput}
                             autoCapitalize="none"
@@ -134,12 +152,10 @@ export default Register = ({ navigation }) => {
                         <Entypo onPress={() => showPassConfirm()}
                             style={{ position: 'absolute', right: 8 }} name={showPasswordConfirm ? 'eye-with-line' : 'eye'} color="black" size={30} />
                     </View>
-                    {stateConfirm &&
-                        <View style={styles.messageErr}>
-                            <MaterialIcons name="error-outline" size={12} color="red" />
-                            <Text style={styles.err}>Mẩu khẩu của bạn không trùng khớp</Text>
-                        </View>
-                        }
+                    
+                    <View style={styles.checkBox}>
+                        <MyCheckBox isChecked={isChecked} setChecked={setChecked} />
+                    </View>
                 </View>
                 {/* Dang nhap && Dang ky */}
                 <View style={styles.button}>
@@ -191,7 +207,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderColor:'red'
+        borderColor: 'red'
     },
     textInput: {
         color: 'black',
@@ -215,5 +231,10 @@ const styles = StyleSheet.create({
     err: {
         color: '#FF0000',
         fontSize: 12
+    },
+    checkBox: {
+        marginTop: 12,
+        marginLeft: 8,
+        width: "80%",
     }
 });

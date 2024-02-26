@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import API, { endpoints } from "../configs/API";
+import API, { authApi, endpoints } from "../configs/API";
 import RenderHTML from "react-native-render-html";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import moment from "moment/moment";
 import 'moment/locale/vi';
+import MyContext from "../configs/MyContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default CompanyDetail = ({ route }) => {
     const [companies, setCompanies] = useState(null)
     const [jobs, setJobs] = useState(null)
     const [comments, setComments] = React.useState(null);
+    const [content, setContent] = React.useState();
     const { companyId } = route.params;
+    const [user, ] = useContext(MyContext);
     const Tab = createMaterialTopTabNavigator();
 
     useEffect(() => {
@@ -53,7 +57,7 @@ export default CompanyDetail = ({ route }) => {
     const ThemBinhLuan = async () => {
         try {
             let token = await AsyncStorage.getItem('access-token');
-            let res = await authApi(token).post(endpoints['add-comment'](lessonId), {
+            let res = await authApi(token).post(endpoints['add-comment'](companyId), {
                 'content': content
             })
             setComments(current => [res.data, ...current]);
@@ -113,16 +117,20 @@ export default CompanyDetail = ({ route }) => {
     function Binhluan() {
         return (
             <ScrollView>
-                <View style={{ alignItems: "center", justifyContent: "center", flexDirection: 'row', margin: 20, width: '100%' }}>
-                    <TextInput style={{ width: '80%', backgroundColor: 'white', padding: 10, borderRadius: 10 }} placeholder="Nội dung bình luận..." />
-                    <TouchableOpacity style={{ width: '20%', marginRight: '1%' }}>
-                        <FontAwesome name="send" size={30} color="green" style={{margin: 5}} />
-                    </TouchableOpacity>
-                </View>
+                {user === null ? "" : <> 
+                    <View style={{ alignItems: "center", justifyContent: "center", flexDirection: 'row', margin: 20, width: '100%' }}>
+                        <TextInput style={{ width: '80%', backgroundColor: 'white', padding: 10, borderRadius: 10 }}
+                            placeholder="Nội dung bình luận..."
+                            value={content} onChangeText={t => setContent(t)} />
+                        <TouchableOpacity style={{ width: '20%', marginRight: '1%' }} onPress={ThemBinhLuan}>
+                            <FontAwesome name="send" size={30} color="green" style={{ margin: 5 }} />
+                        </TouchableOpacity>
+                    </View>
+                </>}
 
                 {comments === null ? <ActivityIndicator /> : <>
                     {comments.map(c => <View key={c.id} style={{ flexDirection: 'row' }}>
-                        <Image source={require('../components/image/hinh.jpg')} style={[styles.thumb, styles.m_10]} />
+                        <Image source={{uri: c.user.avatar}} style={[styles.thumb, styles.m_10]} />
                         <View>
                             <Text style={[styles.m_10, styles.comment]}>{c.content}</Text>
                             <Text style={styles.m_10}>{moment(c.created_date).locale('vi').fromNow()}</Text>
@@ -138,7 +146,7 @@ export default CompanyDetail = ({ route }) => {
             {companies === null ? <ActivityIndicator /> : <>
                 <View style={{ flex: 0.14, backgroundColor: 'lightblue', position: 'relative' }}></View>
                 <View style={styles.UserBar}>
-                    <Image source={{ uri: companies.image }}  style={{width:100, height:100}}/>
+                    <Image source={{ uri: companies.image }} style={{width:100, height:100}} />
                 </View>
 
                 <View style={{ flex: 0.86 }}>

@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { View, Text } from "react-native";
 import { CheckBox } from "react-native-btr";
-export const MyCheckBox = () => {
-    const [isChecked, setChecked] = useState(false);
+
+export const MyCheckBox = ({isChecked,setChecked}) => {
     const toggleCheckbox = () => {
         setChecked(!isChecked);
     }
+    
     return (
         <View style={{ flexDirection: 'row'}}>
             <CheckBox checked={isChecked}
