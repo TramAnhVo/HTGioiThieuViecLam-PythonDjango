@@ -42,12 +42,17 @@ export default Login = ({ navigation }) => {
                 type: "login",
                 payload: user.data
             });
+            setPassword(null)
             if (user.data.role==="NTD"){
                 navigation.navigate("HomeCompany");
             }else navigation.navigate("HomeJob");
         } catch (error) {
-            // Handle network errors or other exceptions
-            console.error('An error occurred during login: ', error);
+            Alert.alert(
+                'Lỗi',
+                'Thông tin tài khoản không đúng',
+                [{ text: 'OK', onPress: () => console.log('OK pressed') }],
+                { cancelable: false }
+            );
         }
         finally {
             setLoading(false);

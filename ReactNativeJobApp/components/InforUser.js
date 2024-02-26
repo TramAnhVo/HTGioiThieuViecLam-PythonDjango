@@ -1,14 +1,10 @@
 import { Dimensions, Image, ScrollView } from "react-native";
 import { StyleSheet } from "react-native";
 import { Text, TouchableOpacity, View } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import Logout from "./Logout";
 
 const heightWindow = Dimensions.get("window").height;
 export default InforUser = ({ user,navigation }) => {
-    
-    const logout = () => {
-        navigation.navigate('Login')
-    }
     const updateMajor = () => {
         console.log('exp');
     }
@@ -62,14 +58,7 @@ export default InforUser = ({ user,navigation }) => {
                         </View>
                     </View>
                 </View>
-                <View style={styles.footer}>
-                    <TouchableOpacity style={styles.buttonLogOut} onPress={logout}>
-                        <Text style={{ fontSize: 14, color: '#333' }}>
-                            Đăng xuất
-                        </Text>
-                        <MaterialIcons style={{ paddingLeft: 24 }} name='logout' color="black" size={30} />
-                    </TouchableOpacity>
-                </View>
+                <Logout navigation={navigation}/>
                 </>
         // {/* //     </View> */}
         // {/* // </ScrollView> */}

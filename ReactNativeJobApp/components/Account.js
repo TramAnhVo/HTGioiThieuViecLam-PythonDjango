@@ -21,7 +21,6 @@ export default Account = ({ navigation }) => {
             <View style={{ flex: 0.8, backgroundColor: 'white', marginTop: 0.15 * windownHeight, }}>
                 {user.role?<InforUser user={user} navigation={navigation}/>:<MenuCompany navigation={navigation}/>}
             </View>
-
             {/* phan de anh dai dien nguoi dung va ten nguoi dung */}
             <View style={styles.UserBar}>
                 <Avatar/>

@@ -1,20 +1,48 @@
 import { useContext } from "react"
-import { Button, Text } from "react-native"
+import { Button, Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import MyContext from "../configs/MyContext";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 
-const Logout = () => {
+
+const heightWindow = Dimensions.get("window").height;
+
+const Logout = ({navigation}) => {
     const [user, dispatch] = useContext(MyContext);
 
     const logout = () => {
         dispatch({
             "type": "logout"
         })
+        navigation.navigate("Login")
     }
 
-    if (user===null)
-        return <Text>WELCOME</Text>
-
-    return <Button title="Đăng xuất" onPress={logout} />
+    return (
+        <View style={styles.footer}>
+            <TouchableOpacity style={styles.buttonLogOut} onPress={logout}>
+                <Text style={{ fontSize: 14, color: '#333' }}>
+                    Đăng xuất
+                </Text>
+                <MaterialIcons style={{ paddingLeft: 24 }} name='logout' color="black" size={30} />
+            </TouchableOpacity>
+        </View>
+    )
 }
-
 export default Logout;
+const styles=StyleSheet.create({
+    footer: {
+        width: '100%',
+        backgroundColor: '#666',
+        height: 0.15 * heightWindow,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttonLogOut: {
+        flexDirection: 'row',
+        height: '40%',
+        width: '90%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 8
+    }
+});
