@@ -27,11 +27,11 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class JobSerializer(serializers.ModelSerializer):
-    # moi quan he 1 nhieu => 1 major se co nhieu job
-    # major = MajorSerializer(many=False)
-    # location = LocationSerializer(many=False)
-    # company = CompanySerializer(many=False)
-    # position = PositionSerializer(many=False)
+    # major = MajorSerializer()
+    # location = LocationSerializer()
+    # company = CompanySerializer()
+    # position = PositionSerializer()
+    # company = CompanySerializer(read_only=True)
 
     class Meta:
         model = Job

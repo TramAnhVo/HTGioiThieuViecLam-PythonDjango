@@ -19,7 +19,7 @@ export default Account = ({ navigation }) => {
             <View style={{ flex: 0.2, backgroundColor: '#006400', position: 'relative' }}></View>
             {/* phan quan ly viec lam  */}
             <View style={{ flex: 0.8, backgroundColor: 'white', marginTop: 0.15 * windownHeight, }}>
-                {user.role?<InforUser user={user} navigation={navigation}/>:<MenuCompany/>}
+                {user.role?<InforUser user={user} navigation={navigation}/>:<MenuCompany navigation={navigation}/>}
             </View>
 
             {/* phan de anh dai dien nguoi dung va ten nguoi dung */}

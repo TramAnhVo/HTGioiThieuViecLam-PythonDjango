@@ -114,6 +114,24 @@ class JobView(viewsets.ViewSet,
     def get_queryset(self):
         queries = self.queryset
 
+        # queries = []
+        # for job in jobs:
+        #     company_info = {
+        #         'id': job.id,
+        #         'created_date': job.created_date,
+        #         'active': job.active,
+        #         'title': job.title,
+        #         'description': job.description,
+        #         'requirement': job.requirement,
+        #         'experience': job.experience,
+        #         'salary': job.salary,
+        #         'out_off_date': job.out_off_date,
+        #         'location': job.location,
+        #         'major': job.major,
+        #         'position': job.position,
+        #         'company': job.company.to_dict()  # Truy cập thông tin công ty từ mối quan hệ
+        #     }
+        #     queries.append(company_info)
         # Tim kiem theo tu khoa
         q = self.request.query_params.get("q")
         if q:

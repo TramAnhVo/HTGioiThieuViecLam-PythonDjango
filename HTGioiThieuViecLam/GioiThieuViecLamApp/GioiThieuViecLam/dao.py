@@ -45,3 +45,4 @@ def activate_or_lock_company_account(company_id,action):
         return True
     except Company.DoesNotExist:
         return False
+

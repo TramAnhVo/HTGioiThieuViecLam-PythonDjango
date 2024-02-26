@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-export const MenuCompany=()=>{
+export const MenuCompany=({navigation})=>{
     return (
         <>
         <Text style={styles.TextBar}>Quản lý công việc</Text>
