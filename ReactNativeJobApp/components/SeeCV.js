@@ -1,96 +1,49 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
+import API, { endpoints } from "../configs/API";
 
-export default SeeCV = () => {
+export default SeeCV = ({ route }) => {
+    const [Cv, SetCv] = useState(null)
+    const { jobId } = route.params;
+
+    useEffect(() => {
+        const loadCvDetail = async () => {
+            try {
+                let res = await API.get(endpoints['job-cv'](jobId));
+                SetCv(res.data)
+                console.log(res.data)
+            } catch (ex) {
+                console.error(ex);
+            }
+        }
+
+        loadCvDetail();
+    }, [jobId]);
+
     return (
         <ScrollView style={{ flex: 1 }}>
-            <Text style={styles.TextHead}>Quản lý hồ sơ ứng tuyển</Text>
+            {Cv === null ? <ActivityIndicator /> : <>
+                {Cv.map(c => (
+                    <View style={styles.HeaderCV}>
+                        <View style={styles.TextCv}>
+                            <Text style={styles.TextContent} >{c.user}</Text>
+                            <Text style={styles.TextContent} >Vị trí ứng tuyển: {c.job}</Text>
+                            <Text style={styles.TextContent} >File cv: {c.link_cv}</Text>
+                            <Text style={styles.TextContent} >Ngày ứng tuyển: {c.created_date}</Text>
+                        </View>
 
-            <View style={styles.HeaderCV}>
-                <View style={styles.TextCv}>
-                    <Text style={styles.TextContent} >Nguyễn Văn An</Text>
-                    <Text style={styles.TextContent} >Vị trí ứng tuyển: lập trình viên Java</Text>
-                    <Text style={styles.TextContent} >File cv:nguyenvana.pdf</Text>
-                </View>
-
-                <View style={styles.ButtonCV}>
-                    <TouchableOpacity style={{ padding: 5 }}>
-                        <AntDesign name="checkcircle" size={30} color="green" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <AntDesign name="closecircle" size={30} color="red" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.HeaderCV}>
-                <View style={styles.TextCv}>
-                    <Text style={styles.TextContent} >Nguyễn Văn An</Text>
-                    <Text style={styles.TextContent} >Vị trí ứng tuyển: lập trình viên Java</Text>
-                    <Text style={styles.TextContent} >File cv:nguyenvana.pdf</Text>
-                </View>
-
-                <View style={styles.ButtonCV}>
-                    <TouchableOpacity style={{ padding: 5 }}>
-                        <AntDesign name="checkcircle" size={30} color="green" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <AntDesign name="closecircle" size={30} color="red" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.HeaderCV}>
-                <View style={styles.TextCv}>
-                    <Text style={styles.TextContent} >Nguyễn Văn An</Text>
-                    <Text style={styles.TextContent} >Vị trí ứng tuyển: lập trình viên Java</Text>
-                    <Text style={styles.TextContent} >File cv:nguyenvana.pdf</Text>
-                </View>
-
-                <View style={styles.ButtonCV}>
-                    <TouchableOpacity style={{ padding: 5 }}>
-                        <AntDesign name="checkcircle" size={30} color="green" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <AntDesign name="closecircle" size={30} color="red" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.HeaderCV}>
-                <View style={styles.TextCv}>
-                    <Text style={styles.TextContent} >Nguyễn Văn An</Text>
-                    <Text style={styles.TextContent} >Vị trí ứng tuyển: lập trình viên Java</Text>
-                    <Text style={styles.TextContent} >File cv:nguyenvana.pdf</Text>
-                </View>
-
-                <View style={styles.ButtonCV}>
-                    <TouchableOpacity style={{ padding: 5 }}>
-                        <AntDesign name="checkcircle" size={30} color="green" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <AntDesign name="closecircle" size={30} color="red" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.HeaderCV}>
-                <View style={styles.TextCv}>
-                    <Text style={styles.TextContent} >Nguyễn Văn An</Text>
-                    <Text style={styles.TextContent} >Vị trí ứng tuyển: lập trình viên Java</Text>
-                    <Text style={styles.TextContent} >File cv:nguyenvana.pdf</Text>
-                </View>
-
-                <View style={styles.ButtonCV}>
-                    <TouchableOpacity style={{ padding: 5 }}>
-                        <AntDesign name="checkcircle" size={30} color="green" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <AntDesign name="closecircle" size={30} color="red" />
-                    </TouchableOpacity>
-                </View>
-            </View>
+                        <View style={styles.ButtonCV}>
+                            <TouchableOpacity style={{ padding: 5 }}>
+                                <AntDesign name="checkcircle" size={30} color="green" />
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <AntDesign name="closecircle" size={30} color="red" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                ))}
+            </>}
         </ScrollView>
     );
 }
@@ -106,13 +59,6 @@ const styles = StyleSheet.create({
         margin: 10,
     },
 
-    TextHead: {
-        fontWeight: "700",
-        marginLeft: 10,
-        marginTop: 10,
-        fontSize: 18,
-    },
-
     TextCv: {
         width: '80%',
     },
@@ -120,6 +66,7 @@ const styles = StyleSheet.create({
     TextContent: {
         fontWeight: "700",
         fontSize: 16,
+        color: 'black'
     },
 
     ButtonCV: {
