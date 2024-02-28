@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import MyContext from "../configs/MyContext";
 
 export default Job = ({c,navigation}) => {
+    const [user] = useContext(MyContext);
     const goToDetail = () => {
-        navigation.navigate("CTCV", {"jobId": c.id})
+        if(user.role)
+            navigation.navigate("CTCV", {"jobId": c.id});
+        else navigation.navigate("SeeCV",{"jobId": c.id,"title":c.title})
     }
     return (
         <TouchableOpacity

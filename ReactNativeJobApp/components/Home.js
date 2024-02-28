@@ -46,7 +46,12 @@ export default Home = ({ route, navigation }) => {
                 {/* bai dang tuyen dung */}
                 {jobs === null ? <ActivityIndicator /> : <>
                     <View style={styles.Jobs}>
-                        <Text style={styles.TextHead}>CÔNG VIỆC MỚI NHẤT</Text>
+                        <View style={styles.title}>
+                            <Text style={styles.TextHead}>CÔNG VIỆC MỚI NHẤT</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate("Jobs")}>
+                                <Text style={{ color: '#00b14f' }}> Xem tất cả</Text>
+                            </TouchableOpacity>
+                        </View>
                         {jobs.map(c => (
                             <Job key={c.id} navigation={navigation} c={c} />
                         ))}
@@ -94,10 +99,14 @@ const styles = StyleSheet.create({
         marginTop: 4,
         padding: 5
     },
-
     Jobs: {
         marginRight: '4%',
         marginLeft: '4%',
+    },
+    title: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: "center"
     },
 
     // bai dang cong viec

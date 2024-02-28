@@ -9,7 +9,6 @@ import InforUser from "./InforUser";
 const windownHeight = Dimensions.get('window').height;
 
 export default Account = ({ navigation }) => {
-
     const [user] = useContext(MyContext);
     return (
         <View style={{ flex: 1 }}>

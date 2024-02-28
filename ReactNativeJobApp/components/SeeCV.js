@@ -5,7 +5,7 @@ import API, { endpoints } from "../configs/API";
 
 export default SeeCV = ({ route }) => {
     const [Cv, SetCv] = useState(null)
-    const { jobId } = route.params;
+    const { jobId,title } = route.params;
 
     useEffect(() => {
         const loadCvDetail = async () => {
@@ -28,7 +28,7 @@ export default SeeCV = ({ route }) => {
                     <View style={styles.HeaderCV}>
                         <View style={styles.TextCv}>
                             <Text style={styles.TextContent} >{c.user}</Text>
-                            <Text style={styles.TextContent} >Vị trí ứng tuyển: {c.job}</Text>
+                            <Text style={styles.TextContent} >Vị trí ứng tuyển: {title}</Text>
                             <Text style={styles.TextContent} >File cv: {c.link_cv}</Text>
                             <Text style={styles.TextContent} >Ngày ứng tuyển: {c.created_date}</Text>
                         </View>

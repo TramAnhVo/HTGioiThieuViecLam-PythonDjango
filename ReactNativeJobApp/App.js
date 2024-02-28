@@ -104,7 +104,7 @@ export default MainComponent = function () {
                     {/* thong tin doanh nghiep */}
                     <Stack.Screen name="TTDN" component={TTDN} options={{headerShown: true, title: 'Thông tin chi tiết doanh nghiệp' }} />
                     {/* dang tin tuyen dung */}
-                    <Stack.Screen name="DTTD" component={DangBaiTuyenDung} options={{ headerShown: true, title: 'Đăng tin tuyển dụng' }} />
+                    <Stack.Screen name="DTTD" component={DangBaiTuyenDung} options={{ headerShown: false, title: 'Đăng tin tuyển dụng' }} />
                     {/* chi tiet cong viec */}
                     <Stack.Screen name="CTCV" component={JobDetails} options={{ headerShown: true, title: 'Thông tin chi tiết tuyển dụng' }} />
                     {/* chi tiet cong ty */}
