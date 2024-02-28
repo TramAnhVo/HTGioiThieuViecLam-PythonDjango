@@ -15,15 +15,8 @@ export default QuanLyBaiDang = () => {
     useEffect(() => {
         const loadCompanyJob = async () => {
             try {
-                let com = await API.get(endpoints['company-user'](userId));
-
-                if (com.data.length > 0) {
-                    let firstItem = com.data[0];
-                    let jobs = await API.get(endpoints['job-company'](firstItem.id))
-                    setJobs(jobs.data)
-                } else {
-                    console.log("Mảng trống");
-                }
+                let jobs = await API.get(endpoints['job-company'](userId))
+                setJobs(jobs.data)
             } catch (ex) {
                 console.error(ex);
             }

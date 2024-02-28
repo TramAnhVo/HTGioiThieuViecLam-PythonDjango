@@ -80,7 +80,7 @@ class CompanyView(viewsets.ViewSet,
     def jobs(self, request, pk):
         jobs = self.get_object().job_set.filter(active=True).all()
 
-        return Response(serializers.JobSerializer(jobs, many=True, context={'request': request}).data, status=status.HTTP_200_OK)
+        return Response(serializers.JobReadSerializer(jobs, many=True, context={'request': request}).data, status=status.HTTP_200_OK)
 
     # tim kiem ten cong ty
     def get_queryset(self):
@@ -108,31 +108,15 @@ class JobView(viewsets.ViewSet,
               generics.UpdateAPIView,
               generics.DestroyAPIView):
     queryset = Job.objects.all()
-    serializer_class = serializers.JobSerializer
     pagination_class = paginator.BasePagination
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return serializers.JobCreateSerializer
+        else:
+            return serializers.JobReadSerializer
 
     def get_queryset(self):
         queries = self.queryset
-
-        # queries = []
-        # for job in jobs:
-        #     company_info = {
-        #         'id': job.id,
-        #         'created_date': job.created_date,
-        #         'active': job.active,
-        #         'title': job.title,
-        #         'description': job.description,
-        #         'requirement': job.requirement,
-        #         'experience': job.experience,
-        #         'salary': job.salary,
-        #         'out_off_date': job.out_off_date,
-        #         'location': job.location,
-        #         'major': job.major,
-        #         'position': job.position,
-        #         'company': job.company.to_dict()  # Truy cập thông tin công ty từ mối quan hệ
-        #     }
-        #     queries.append(company_info)
-        # Tim kiem theo tu khoa
         q = self.request.query_params.get("q")
         if q:
             queries = queries.filter(title__icontains=q)

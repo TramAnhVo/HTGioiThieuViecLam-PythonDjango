@@ -72,16 +72,27 @@ export default DangTinTuyenDung = ({navigation}) => {
         out_off_date: '',
         location: '',
         major:'',
-        position:'',    
+        position:'',
         company:user.id,
     });
+    const form={
+        "company":14,
+        "description": "a",
+        "experience": "Không cần kinh nghiệm",
+        "location":1,
+        "major":1,
+        "out_off_date": "2024-01-01",
+        "position": 1,
+        "requirement": "a",
+        "salary": "5Tr - 6Tr",
+        "title": "aaa"
+      }
     const handleChangeInfo = (key, value) => {
         setFormData({ ...formData, [key]: value });
     };
     const handleSubmit=async()=>{
-        console.log(formData);
-        const data={'company': 4, "description": "a", "experience": "Không cần kinh nghiệm", "location": 1, "major": 1, "out_off_date": "2024-01-01", "position": 1, "requirement": "a", "salary": "5Tr - 6Tr", "title": "aaa"}
-        const res=await API.post(endpoints[`jobs`],(data));
+        console.log(form);
+        const res=await API.post(endpoints[`jobs`],(formData));
         navigation.navigate("HomeCompany",{screen:'JobCompany'});
     }
     return (

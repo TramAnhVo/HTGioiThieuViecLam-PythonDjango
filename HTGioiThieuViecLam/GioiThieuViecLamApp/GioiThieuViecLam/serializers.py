@@ -26,16 +26,21 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class JobSerializer(serializers.ModelSerializer):
-    # major = MajorSerializer()
-    # location = LocationSerializer()
-    # company = CompanySerializer()
-    # position = PositionSerializer()
-    # company = CompanySerializer(read_only=True)
+class JobCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = '__all__'
+
+class JobReadSerializer(serializers.ModelSerializer):
+    major = MajorSerializer(read_only=True)
+    location = LocationSerializer(read_only=True)
+    position = PositionSerializer(read_only=True)
+    company = CompanySerializer(read_only=True)
 
     class Meta:
         model = Job
         fields = '__all__'
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
