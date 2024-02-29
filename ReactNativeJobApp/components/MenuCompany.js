@@ -2,9 +2,18 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useContext } from "react";
+import MyContext from "../configs/MyContext";
 
 
 export const MenuCompany=({ navigation })=>{
+    const [user,dispatch]=useContext(MyContext);
+    const logout = () => {
+        dispatch({
+            "type": "logout"
+        })
+        navigation.navigate("Login")
+    }
     return (
         <>
          <Text style={styles.TextBar}>Quản lý công việc</Text>
@@ -33,7 +42,7 @@ export const MenuCompany=({ navigation })=>{
                     </View>
 
                     <View style={styles.item}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={logout}>
                             <Entypo name="log-out" size={30} color="green" style={{ textAlign: 'center', marginTop: 10 }} />
                             <Text style={styles.TextItem}>Đăng xuất tài khoản</Text>
                         </TouchableOpacity>

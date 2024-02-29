@@ -7,11 +7,12 @@ import * as ImagePicker from 'expo-image-picker';
 import MyContext from '../configs/MyContext';
 import { IMAGE_DEFAULT } from '../utils/image_default';
 import API, { endpoints } from '../configs/API';
+import OverlayLoading from './Loading';
 
 export default Avatar = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [imgUrl, setImgUrl] = useState(null);
-                  
+    const [loading,setLoading]=useState(false);
     const [user,dispatch] = useContext(MyContext);
     useEffect(() => {
         setImgUrl(user.avatar || IMAGE_DEFAULT)
@@ -30,13 +31,16 @@ export default Avatar = () => {
             })
             try {
                 if (!result.canceled) {
+                    setLoading(true);
                     const url = await uploadFirebase(result.assets[0].uri, 'takePhoto');
                     await updateAvatar(url);
                     setImgUrl(url);
+                    setLoading(false);
                     setModalVisible(false);
                     ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT);
                 }
             } catch (error) {
+                setLoading(false);
                 console.log("error", error);
             }
             setModalVisible(false);
@@ -85,22 +89,31 @@ export default Avatar = () => {
                 type: "image/*",
                 multipleL: false
             });
+            setLoading(true);
             if (!result.canceled) {
                 const { uri, name } = result.assets[0];
                 const url = await uploadFirebase(uri, name);
                 await updateAvatar(url);
                 setImgUrl(url);
+                setLoading(false);
                 setModalVisible(false);
                 ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT);
             }
         } catch (error) {
+            setLoading(false);
             console.error('Error uploading image:', error);
         }
     };
     const deleteAvatar=async()=>{
-        setImgUrl(IMAGE_DEFAULT);
-        setModalVisible(false);
-        await updateAvatar(IMAGE_DEFAULT);
+        try {
+            setLoading(true);
+            setImgUrl(IMAGE_DEFAULT);
+            await updateAvatar(IMAGE_DEFAULT);
+            setLoading(false);
+            setModalVisible(false);
+        } catch (error) {
+            setLoading(false);
+        }
     }
     const updateAvatar = async (url) => {
         try {
@@ -147,6 +160,7 @@ export default Avatar = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
+                {loading&&<OverlayLoading/>}
             </Modal>
         </>
     );

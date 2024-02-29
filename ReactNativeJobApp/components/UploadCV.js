@@ -14,7 +14,7 @@ export default UploadCV = ({setUrlCV}) => {
         //     multipleL: false
         // });
         const result = await DocumentPicker.getDocumentAsync({
-            type: "image/*",
+            type: "application/pdf",
             multipleL: false
         });
         if (!result.canceled) {

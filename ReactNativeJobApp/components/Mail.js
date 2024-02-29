@@ -1,8 +1,8 @@
 import * as MailComposer from 'expo-mail-composer';
 import { useState } from 'react';
-import { Button, Modal, StyleSheet, TextInput, View } from 'react-native';
+import { Button, Dimensions, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-
+const heightWindow = Dimensions.get("window").height;
 export const Mail = ({ toggleMail, isModalMail, email }) => {
     const [message, setMessage] = useState('');
     const [title, setTitle] = useState('');
@@ -37,25 +37,29 @@ export const Mail = ({ toggleMail, isModalMail, email }) => {
                     multiline
                     style={styles.input}
                 />
-                <View style={styles.submit}>
-                    <Button title="Gửi" onPress={sendEmail} />
-                    <Button title="Đóng" onPress={toggleMail} />
-                </View>
+                <TouchableOpacity onPress={sendEmail}
+                    style={{ marginTop: 0.08 * heightWindow, borderRadius: 100, flexDirection: 'row', width: '80%', height: '5%', borderColor: 'white', borderWidth: 1, backgroundColor: '#00b14f', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>Gửi Email</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleMail}
+                    style={{ marginTop: 0.04 * heightWindow, borderRadius: 100, flexDirection: 'row', width: '80%', height: '5%', borderColor: 'white', borderWidth: 1, backgroundColor: '#00b14f', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>Đóng</Text>
+                </TouchableOpacity>
+
             </View>
-        </Modal>
+        </Modal >
     )
 
 }
 const styles = StyleSheet.create({
     modalContent: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22,
     },
     input: {
-        borderRadius: 100,
-        height: 100,
+        marginTop: 40,
+        height: 160,
         borderColor: 'gray',
         borderWidth: 1,
         width: '80%',
@@ -63,14 +67,16 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     title: {
+        marginTop: 20,
+        paddingLeft: 12,
         borderRadius: 20,
         color: 'black',
         width: '80%',
-        height: 32,
+        height: 40,
         borderWidth: 1,
-        marginBottom:8
+        marginBottom: 8
     },
-    submit:{
-        flexDirection:'row'
+    submit: {
+        flexDirection: 'row'
     }
 });

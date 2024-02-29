@@ -74,7 +74,7 @@ export default Login = ({ navigation }) => {
                         <Fontisto style={{ paddingLeft: 24 }} name='email' color="black" size={30} />
                         <TextInput onChangeText={(text) => setUsername(text)}
                             value={username}
-                            placeholder="Ten nguoi dung" style={{ color: 'black', width: '75%', height: '100%' }}
+                            placeholder="Tên người dùng" style={{ color: 'black', width: '75%', height: '100%' }}
                             autoCapitalize="none" />
                     </View>
                     <View style={{ backgroundColor: "#F0F0F0", marginTop: 0.015 * heightWindow, borderRadius: 100, padding: 12, width: '80%', height: '30px', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

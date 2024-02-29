@@ -101,7 +101,7 @@ export default Register = ({ navigation }) => {
                     }
                     <View style={{ ...styles.input, borderWidth: isValidUsername ? 1 : 0 }}>
                         <MaterialCommunityIcons style={{ paddingLeft: 24 }} name='account' color="black" size={30} />
-                        <TextInput placeholder="Ten nguoi dung" style={styles.textInput}
+                        <TextInput placeholder="Tên người dùng" style={styles.textInput}
                             onChangeText={(text) => handleChangeInfo('username', text)}
                             value={formData.username}
                             autoCapitalize="none" />

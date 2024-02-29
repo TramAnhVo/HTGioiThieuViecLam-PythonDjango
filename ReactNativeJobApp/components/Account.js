@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         right: 40,
         width: '90%',
         height: '20%',
-        backgroundColor: 'white',
+        backgroundColor: '#dadce0',
         position: 'absolute',
         zIndex: 99,
         borderWidth: 1,

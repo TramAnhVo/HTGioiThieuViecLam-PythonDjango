@@ -30,6 +30,7 @@ const Logout = ({navigation}) => {
 export default Logout;
 const styles=StyleSheet.create({
     footer: {
+        marginTop:0.1*heightWindow,
         width: '100%',
         backgroundColor: '#666',
         height: 0.15 * heightWindow,
