@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator, Modal, Button } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import API, { endpoints } from "../configs/API";
+import { Entypo } from '@expo/vector-icons';
+import WebView from "react-native-webview";
+import { ModalViewCV } from "./ModalViewCV";
+import { Mail } from "./Mail";
+// import PDFView from 'react-native-view-pdf';
 
 export default SeeCV = ({ route }) => {
     const [Cv, SetCv] = useState(null)
-    const { jobId,title } = route.params;
+    const { jobId, title } = route.params;
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [isModalMail, setModalMail] = useState(false);
 
     useEffect(() => {
         const loadCvDetail = async () => {
@@ -21,26 +28,41 @@ export default SeeCV = ({ route }) => {
         loadCvDetail();
     }, [jobId]);
 
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+
+    const toggleMail = () => {
+        setModalMail(!isModalMail);
+    };
+
     return (
         <ScrollView style={{ flex: 1 }}>
             {Cv === null ? <ActivityIndicator /> : <>
                 {Cv.map(c => (
                     <View style={styles.HeaderCV}>
                         <View style={styles.TextCv}>
-                            <Text style={styles.TextContent} >{c.user}</Text>
+                            <Text style={styles.TextContent} >{c.user.username}</Text>
                             <Text style={styles.TextContent} >Vị trí ứng tuyển: {title}</Text>
                             <Text style={styles.TextContent} >File cv: {c.link_cv}</Text>
                             <Text style={styles.TextContent} >Ngày ứng tuyển: {c.created_date}</Text>
                         </View>
 
                         <View style={styles.ButtonCV}>
-                            <TouchableOpacity style={{ padding: 5 }}>
+                            <TouchableOpacity onPress={toggleModal}>
+                                <Entypo name="eye" size={30} color="black" />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={toggleMail}
+                                style={{ padding: 5 }}>
                                 <AntDesign name="checkcircle" size={30} color="green" />
                             </TouchableOpacity>
                             <TouchableOpacity>
                                 <AntDesign name="closecircle" size={30} color="red" />
                             </TouchableOpacity>
+
                         </View>
+                        <ModalViewCV toggleModal={toggleModal} isModalVisible={isModalVisible} link_cv={c.link_cv} />
+                        <Mail toggleMail={toggleMail} isModalMail={isModalMail} email={c.user.email}/>
                     </View>
                 ))}
             </>}
@@ -70,9 +92,9 @@ const styles = StyleSheet.create({
     },
 
     ButtonCV: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
         alignItems: 'center',
         width: '20%',
+        justifyContent: 'center',
+        textAlign: 'center'
     }
 })
