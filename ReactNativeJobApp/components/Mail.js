@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, Modal, StyleSheet, TextInput, View } from 'react-native';
 
 
-export const Mail = ({ toggleMail, isModalMail }) => {
+export const Mail = ({ toggleMail, isModalMail, email }) => {
     const [message, setMessage] = useState('');
     const [title, setTitle] = useState('');
     const sendEmail = async () => {
@@ -15,7 +15,7 @@ export const Mail = ({ toggleMail, isModalMail }) => {
             }
 
             await MailComposer.composeAsync({
-                recipients: ['ny264480@gmail.com'],
+                recipients: [email],
                 subject: title,
                 body: message,
             });
