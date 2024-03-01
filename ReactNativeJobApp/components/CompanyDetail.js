@@ -10,13 +10,13 @@ import MyContext from "../configs/MyContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-export default CompanyDetail = ({ route }) => {
+export default CompanyDetail = ({ route, navigation }) => {
     const [companies, setCompanies] = useState(null)
     const [jobs, setJobs] = useState(null)
     const [comments, setComments] = React.useState(null);
     const [content, setContent] = React.useState();
     const { companyId } = route.params;
-    const [user, ] = useContext(MyContext);
+    const [user,] = useContext(MyContext);
     const Tab = createMaterialTopTabNavigator();
 
     useEffect(() => {
@@ -66,6 +66,10 @@ export default CompanyDetail = ({ route }) => {
         }
     }
 
+    const goToDetail = (jobId) => {
+        navigation.navigate("CTCV", { "jobId": jobId });
+    }
+
     function Infomation() {
         return (
             <ScrollView >
@@ -92,14 +96,15 @@ export default CompanyDetail = ({ route }) => {
             <ScrollView style={{ margin: 10 }}>
                 {jobs === null ? <ActivityIndicator /> : <>
                     {jobs.map(c => (
-                        <TouchableOpacity>
-                            <View style={styles.ItemJob}>
+                        <TouchableOpacity
+                            onPress={() => goToDetail(c.id)}>
+                            <View style={styles.ItemJob} key={c.id}>
                                 <View style={{ width: '20%' }} >
-                                    <Image source={require('../components/image/job.png')} style={styles.avatar} />
+                                    <Image source={{ uri: c.company.image }} style={styles.avatar} />
                                 </View>
                                 <View style={{ width: '73%' }}>
-                                    <Text style={{ fontSize: 15, fontWeight: '700' }}>{c.title}</Text>
-                                    <Text style={{ fontSize: 12, fontWeight: '400', textAlign: 'left' }}>{c.company.name}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '700' }}>{c.title}</Text>
+                                    <Text style={{ fontSize: 13, fontWeight: '400', textAlign: 'left' }}>{c.company.name}</Text>
 
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 4 }}>
                                         <Text style={styles.TextTag}>{c.salary}</Text>
@@ -117,7 +122,7 @@ export default CompanyDetail = ({ route }) => {
     function Binhluan() {
         return (
             <ScrollView>
-                {user === null ? "" : <> 
+                {user === null ? "" : <>
                     <View style={{ alignItems: "center", justifyContent: "center", flexDirection: 'row', margin: 20, width: '100%' }}>
                         <TextInput style={{ width: '80%', backgroundColor: 'white', padding: 10, borderRadius: 10 }}
                             placeholder="Nội dung bình luận..."
@@ -130,7 +135,7 @@ export default CompanyDetail = ({ route }) => {
 
                 {comments === null ? <ActivityIndicator /> : <>
                     {comments.map(c => <View key={c.id} style={{ flexDirection: 'row' }}>
-                        <Image source={{uri: c.user.avatar}} style={[styles.thumb, styles.m_10]} />
+                        <Image source={{ uri: c.user.avatar }} style={[styles.thumb, styles.m_10]} />
                         <View>
                             <Text style={[styles.m_10, styles.comment]}>{c.content}</Text>
                             <Text style={styles.m_10}>{moment(c.created_date).locale('vi').fromNow()}</Text>
@@ -146,7 +151,7 @@ export default CompanyDetail = ({ route }) => {
             {companies === null ? <ActivityIndicator /> : <>
                 <View style={{ flex: 0.14, backgroundColor: 'lightblue', position: 'relative' }}></View>
                 <View style={styles.UserBar}>
-                    <Image source={{ uri: companies.image }} style={{width:100, height:100}} />
+                    <Image source={{ uri: companies.image }} style={{ width: 100, height: 100 }} />
                 </View>
 
                 <View style={{ flex: 0.86 }}>

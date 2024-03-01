@@ -4,6 +4,7 @@ import MyContext from "../configs/MyContext";
 
 export default Job = ({c,navigation}) => {
     const [user] = useContext(MyContext);
+    
     const goToDetail = () => {
         if(user.role)
             navigation.navigate("CTCV", {"jobId": c.id});

@@ -42,7 +42,7 @@ export default SeeCV = ({ route }) => {
                 {Cv.map(c => (
                     <View style={styles.HeaderCV}>
                         <View style={styles.TextCv}>
-                            <Text style={styles.TextContent} >{c.user.username}</Text>
+                            <Text style={styles.TextContent} >{c.user.last_name + ' ' + c.user.first_name}</Text>
                             <Text style={styles.TextContent} >Vị trí ứng tuyển: {title}</Text>
                             <Text style={styles.TextContent} >File cv: {c.link_cv}</Text>
                             <Text style={styles.TextContent} >Ngày ứng tuyển: {c.created_date}</Text>

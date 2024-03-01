@@ -78,8 +78,6 @@ function HomeCompany() {
 
             <Tab.Screen name="JobCompany" component={JobCompany} options={{ title: 'Trang chủ' }} />
 
-            <Tab.Screen name="Jobs" component={AllJob} options={{ title: 'Công việc' }} />
-
             <Tab.Screen name="Account" component={Account} options={{ title: 'Tài khoản' }} />
         </Tab.Navigator>
     );

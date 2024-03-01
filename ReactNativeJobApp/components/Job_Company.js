@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const JobCompany = ({ navigation }) => {
     const [user, dispatch] = useContext(MyContext);
     const [jobs, setJobs] = useState(null);
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -83,6 +84,6 @@ const styles = StyleSheet.create({
         color:'blue'
     },
     form:{
-        width:'90%'
+        width:'97%'
     }
 })

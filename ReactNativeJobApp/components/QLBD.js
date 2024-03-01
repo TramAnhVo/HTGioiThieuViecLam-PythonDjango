@@ -32,7 +32,7 @@ export default QuanLyBaiDang = () => {
                 {jobs.map(j => (
                     <ScrollView>
                         <View style={styles.HeaderCV}>
-                            <TouchableOpacity style={styles.TextCv}>
+                            <TouchableOpacity style={styles.TextCv} key={j.id}  onPress={() => goToDetail(j.id)}>
                                 <Text style={styles.TextContent} >Vị trí: {j.title}</Text>
                                 <Text style={styles.TextContent} >Ngày đăng: {j.created_date}</Text>
                                 <Text style={styles.TextContent} >Ngày hết hạn: {j.out_off_date}</Text>

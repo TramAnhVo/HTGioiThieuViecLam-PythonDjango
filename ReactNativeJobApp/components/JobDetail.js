@@ -102,7 +102,7 @@ export default JobDetails = ({ route, navigation }) => {
                                 <MaterialCommunityIcons name="clipboard-file" size={30} color="#2E8B57" />
                                 <Text style={{ fontSize: 18, fontWeight: '600', marginLeft: 15 }}>Miêu tả công việc</Text>
                             </View>
-                            <ScrollView style={{ height: height * 0.55 }}>
+                            <ScrollView style={{ height: height * 0.4 }}>
                                 <RenderHTML contentWidth={windowWidth} source={{ html: jobs.description }} style={{ fontSize: 16 }} />
                             </ScrollView>
                         </View>
@@ -112,7 +112,7 @@ export default JobDetails = ({ route, navigation }) => {
                                 <MaterialCommunityIcons name="clipboard-file" size={30} color="#2E8B57" />
                                 <Text style={{ fontSize: 18, fontWeight: '600', marginLeft: 15 }}>Yêu cầu công việc</Text>
                             </View>
-                            <ScrollView style={{ height: height * 0.4 }}>
+                            <ScrollView style={{ height: height * 0.3 }}>
                                 <RenderHTML contentWidth={windowWidth} source={{ html: jobs.requirement }} style={{ fontSize: 16 }} />
                             </ScrollView>
                         </View>

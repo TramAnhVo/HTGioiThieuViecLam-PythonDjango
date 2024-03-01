@@ -14,16 +14,19 @@ export default Account = ({ navigation }) => {
         <View style={{ flex: 1 }}>
             <StatusBar barStyle='default'/>
             <View style={{ flex: 0.2, backgroundColor: '#006400', position: 'relative' }}></View>
-            <View style={{ flex: 0.8, backgroundColor: 'white', marginTop: 0.15 * windownHeight, }}>
+            <View style={{ flex: 0.8, backgroundColor: 'white', marginTop: 0.15 * windownHeight }}>
 
                 {user.role ? <InforUser user={user} navigation={navigation}/>:<MenuCompany navigation={navigation}/> }
             </View>
 
             {/* phan de anh dai dien nguoi dung va ten nguoi dung */}
             <View style={styles.UserBar}>
-                <Avatar />
-                <View >
-                    <Text style={{ fontSize: 20, textAlign: 'center' }}>{user.role?user.username:user.name}</Text>
+                <View style={{with: '30%'}}>
+                <Avatar  />
+                </View>
+            
+                <View style={{ width: '60%' }} >
+                    <Text style={{ fontSize: 18, textAlign: 'center' }}>{user.role?user.username:user.name}</Text>
                     <Text style={{ textAlign: 'center' }}>{user.role ? 'Ứng viên' : 'Nhà tuyển dụng'}</Text>
                 </View>
             </View>
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 
     item: {
