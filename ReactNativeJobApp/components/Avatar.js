@@ -15,7 +15,10 @@ export default Avatar = () => {
     const [loading,setLoading]=useState(false);
     const [user,dispatch] = useContext(MyContext);
     useEffect(() => {
-        setImgUrl(user.avatar || IMAGE_DEFAULT)
+        if(user.role)
+            setImgUrl(user.avatar || IMAGE_DEFAULT)
+        else
+            setImgUrl(user.image || IMAGE_DEFAULT)
     }, []);
     
     const handleCameraLaunch = async () => {

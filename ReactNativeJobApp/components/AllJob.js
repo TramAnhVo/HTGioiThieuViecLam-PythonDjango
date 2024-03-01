@@ -16,6 +16,7 @@ export default AllJob = ({ navigation }) => {
                     page: page,
                 }
             },);
+            console.log(data);
             setJobs(data.results);
             setNext(data.next);
             setPrevious(data.previous);

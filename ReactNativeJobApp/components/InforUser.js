@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Logout from "./Logout";
 
 const heightWindow = Dimensions.get("window").height;
-export default InforUser = ({ user,navigation }) => {
+export default InforUser = ({ user, navigation }) => {
     const updateMajor = () => {
         console.log('exp');
     }
@@ -20,48 +20,45 @@ export default InforUser = ({ user,navigation }) => {
         // <ScrollView>
         //     <View style={styles.screen}>
         <>
-                <View style={styles.formInfor}>
-                    <View style={styles.experience}>
-                        <View style={styles.title}>
-                            <Text style={{ fontWeight: 'bold' }}>Chuyên ngành</Text>
-                            <TouchableOpacity onPress={() => updateMajor()}>
-                                <Text style={{ color: '#00b14f' }}> Sửa</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.content}>
-                            <Text style={styles.item}>{user.major?user.major:"Bạn chưa cập nhật"}</Text>
-                        </View>
+            <View style={styles.formInfor}>
+                <View style={styles.experience}>
+                    <View style={styles.title}>
+                        <Text style={{ fontWeight: 'bold' }}>Chuyên ngành</Text>
+                        <TouchableOpacity onPress={() => updateMajor()}>
+                            <Text style={{ color: '#00b14f' }}> Sửa</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={{ width: '90%', height: 1, backgroundColor: '#333' }} />
-                    <View style={styles.experience}>
-                        <View style={styles.title}>
-                            <Text style={{ fontWeight: 'bold' }}>Mức lương mong muốn</Text>
-                            <TouchableOpacity onPress={() => updateJob()}>
-                                <Text style={{ color: '#00b14f' }}> Sửa</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.content}>
-                            <Text style={styles.item}>{user.location?user.location:"Bạn chưa cập nhật"}</Text>
-                        </View>
-                    </View>
-                    <View style={{ width: '90%', height: 1, backgroundColor: '#333' }} />
-                    <View style={styles.experience}>
-                        <View style={styles.title}>
-                            <Text style={{ fontWeight: 'bold' }}>Địa điểm làm việc mong muốn</Text>
-                            <TouchableOpacity onPress={() => updateAddress()}>
-                                <Text style={{ color: '#00b14f' }}> Sửa</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.content}>
-                            <Text style={styles.item}>ashffefsdgdfgdfgdfgdfgsdh</Text>
-                            <Text style={styles.item}>ashadfsefsdfsdfádasdfsdh</Text>
-                        </View>
+                    <View style={styles.content}>
+                        <Text style={styles.item}>{user.major ? user.major : "Bạn chưa cập nhật"}</Text>
                     </View>
                 </View>
-                <Logout navigation={navigation}/>
-                </>
-        // {/* //     </View> */}
-        // {/* // </ScrollView> */}
+                <View style={{ width: '90%', height: 1, backgroundColor: '#333' }} />
+                <View style={styles.experience}>
+                    <View style={styles.title}>
+                        <Text style={{ fontWeight: 'bold' }}>Mức lương mong muốn</Text>
+                        <TouchableOpacity onPress={() => updateJob()}>
+                            <Text style={{ color: '#00b14f' }}> Sửa</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.content}>
+                        <Text style={styles.item}>{user.location ? user.location : "Bạn chưa cập nhật"}</Text>
+                    </View>
+                </View>
+                <View style={{ width: '90%', height: 1, backgroundColor: '#333' }} />
+                <View style={styles.experience}>
+                    <View style={styles.title}>
+                        <Text style={{ fontWeight: 'bold' }}>Địa điểm làm việc mong muốn</Text>
+                        <TouchableOpacity onPress={() => updateAddress()}>
+                            <Text style={{ color: '#00b14f' }}> Sửa</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.content}>
+                        <Text style={styles.item}>TP.HCM</Text>
+                    </View>
+                </View>
+            </View>
+            <Logout navigation={navigation} />
+        </>
     );
 }
 const styles = StyleSheet.create({
