@@ -8,7 +8,7 @@ import { ModalViewCV } from "./ModalViewCV";
 import { Mail } from "./Mail";
 // import PDFView from 'react-native-view-pdf';
 
-export default SeeCV = ({ route }) => {
+export default SeeCV = ({ navigation, route }) => {
     const [Cv, SetCv] = useState(null)
     const { jobId, title } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
@@ -62,7 +62,7 @@ export default SeeCV = ({ route }) => {
 
                         </View>
                         <ModalViewCV toggleModal={toggleModal} isModalVisible={isModalVisible} link_cv={c.link_cv} />
-                        <Mail toggleMail={toggleMail} isModalMail={isModalMail} email={c.user.email}/>
+                        <Mail navigation={navigation} toggleMail={toggleMail} isModalMail={isModalMail} email={c.user.email}/>
                     </View>
                 ))}
             </>}

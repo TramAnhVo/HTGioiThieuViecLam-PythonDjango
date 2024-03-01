@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, Dimensions, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const heightWindow = Dimensions.get("window").height;
-export const Mail = ({ toggleMail, isModalMail, email }) => {
+export const Mail = ({navigation, toggleMail, isModalMail, email }) => {
     const [message, setMessage] = useState('');
     const [title, setTitle] = useState('');
     const sendEmail = async () => {
@@ -19,6 +19,8 @@ export const Mail = ({ toggleMail, isModalMail, email }) => {
                 subject: title,
                 body: message,
             });
+
+            navigation.navigate("HomeCompany")
         } catch (error) {
             console.log("error: ", error);
         }

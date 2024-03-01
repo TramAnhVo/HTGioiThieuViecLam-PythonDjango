@@ -3,20 +3,20 @@ import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, Touchabl
 import Job from "./Job";
 import API, { endpoints } from "../configs/API";
 import AntDesign from "react-native-vector-icons/AntDesign"
+import SearchInput from "./SearchInput";
 
 export default AllJob = ({ navigation }) => {
     const [jobs, setJobs] = useState(null)
-    const [page, setPage] = useState(1)
+    const [page,setPage]=useState(1)
     const [next, setNext] = useState(null)
     const [previous, setPrevious] = useState(null)
-    const loadJob = async () => {
+    const loadJob = async (p) => {
         try {
             let { data } = await API.get(endpoints['jobs'], {
                 params: {
-                    page: page,
+                    page: p,
                 }
             },);
-            console.log(data);
             setJobs(data.results);
             setNext(data.next);
             setPrevious(data.previous);
@@ -29,22 +29,23 @@ export default AllJob = ({ navigation }) => {
     }, [])
     const handlePrevious = () => {
         if (previous) {
-            setPage(page--)
-            loadJob()
+            setPage(page-1);
+            loadJob(page-1)
         } else {
             console.log("...");
         }
     }
     const handleNext = () => {
         if (next) {
-            setPage(page++)
-            loadJob()
+            setPage(page+1);
+            loadJob(page+1)
         }
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView style={{ flex: 0.84, backgroundColor: '#F8F8F8' }}>
                 <Text style={{ textAlign: 'center', fontWeight: "700", fontSize: 20, margin: 6 }}>TẤT CẢ BÀI TUYỂN DỤNG CỦA CÁC DOANH NGHIỆP</Text>
+                <SearchInput setNext={setNext} setPrevious={setPrevious} setJobs={setJobs}/>
                 {jobs === null ? <ActivityIndicator /> : <>
                     <View style={styles.Jobs}>
                         {jobs.map(c => (
@@ -57,7 +58,7 @@ export default AllJob = ({ navigation }) => {
                         <AntDesign style={{ marginLeft: 12, opacity: previous ? 1 : 0.2 }} name="left" color="#00b14f" size={32} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleNext}>
-                         <AntDesign style={{ marginRight: 12, opacity: next ? 1 : 0.2 }} name="right" color="#00b14f" size={32} />
+                        <AntDesign style={{ marginRight: 12, opacity: next ? 1 : 0.2 }} name="right" color="#00b14f" size={32} />
                     </TouchableOpacity>
                 </View>
             </ScrollView>

@@ -3,27 +3,29 @@ import axios from "axios";
 export const endpoints = {
     'jobs': `/jobs/`,
     'job-details': (jobId) => `/jobs/${jobId}/`,
-    
-    'get-company-by-user':'/companies/get_companies_by_user/',
-    'companies':'/companies/',
-    'company-details': (companyId) => `/companies/${companyId}/`,
-    'job-company':  (companyId) => `/companies/${companyId}/jobs/`,
+
+    'get-company-by-user': '/companies/get_companies_by_user/',
+    'companies': '/companies/',
+    'company-details': (companyId) => `/com                        panies/${companyId}/`,
+    'job-company': (companyId) => `/companies/${companyId}/jobs/`,
     'comments': (companyId) => `/companies/${companyId}/get_comment/`,
     'add-comment': (companyId) => `/companies/${companyId}/add_comment/`,
 
     'company-user': (userId) => `/users/${userId}/company/`,
 
-    'cv':'/cvs/',
+    'cv': '/cvs/',
     'job-cv': (jobId) => `/jobs/${jobId}/get_cv/`,
-    'user-detail':  (userId) => `/users/${userId}/`,
+    'user-detail': (userId) => `/users/${userId}/`,
 
     'login': '/o/token/',
     'current-user': '/users/current-user/',
     'register': '/users/',
     'update-user': (userId) => `/users/${userId}/`,
-    'locations':'/locations/',
-    'majors':'/majors/',
-    'positions':'/positions/'
+    'locations': '/locations/',
+    'majors': '/majors/',
+    'positions': '/positions/',
+
+    'search': (id) => `/locations/${id}/jobs/`
 }
 
 export const authApi = (accessToken) => axios.create({
